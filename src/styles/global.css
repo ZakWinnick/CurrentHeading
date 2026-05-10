@@ -1055,18 +1055,6 @@ button { font: inherit; color: inherit; }
   background: var(--ww-black);
 }
 
-/* ── Section index helpers ──────────────────────────────────────────── */
-.ww-section-num {
-  position: absolute;
-  top: clamp(28px, 3vw, 48px);
-  right: clamp(20px, 4vw, 64px);
-  font-family: var(--ww-mono);
-  font-size: 11px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--ww-mute);
-}
-.ww-section--red .ww-section-num { color: rgba(0,0,0,.55); }
 
 /* ── Sticky-nav-aware scroll offsets ────────────────────────────────── */
 section[id] { scroll-margin-top: 64px; }
