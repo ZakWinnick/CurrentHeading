@@ -1,6 +1,9 @@
 ---
 import Icon from "./icons.astro";
 import { TIERS } from "../data/tiers";
+import { fetchPatreonStats } from "../lib/patreon";
+
+const stats = await fetchPatreonStats();
 ---
 <section class="ww-section ww-section--red" id="patreon">
   <div class="ww-section-num ww-mono">§ 06 / Members</div>
@@ -8,7 +11,11 @@ import { TIERS } from "../data/tiers";
     <div class="ww-eyebrow-row">
       <span class="ww-eyebrow"><span class="ww-idx" style="color: var(--ww-black);">05</span> &nbsp; Community</span>
       <span class="ww-bar"></span>
-      <span class="ww-eyebrow">members.wyldwattage.com</span>
+      <span class="ww-eyebrow">
+        {stats && stats.patronCount > 0
+          ? `${stats.patronCount.toLocaleString()} patrons strong`
+          : "members.wyldwattage.com"}
+      </span>
     </div>
     <div class="ww-patreon__head">
       <h2>
