@@ -378,6 +378,8 @@ button { font: inherit; color: inherit; }
 .ww-about__sidebar dt { font-family: var(--ww-mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--ww-mute); }
 .ww-about__sidebar dd { margin: 4px 0 0; color: var(--ww-paper); font-size: 15px; line-height: 1.45; }
 .ww-about__sidebar dd em { color: var(--ww-red); font-style: normal; }
+.ww-about__sidebar dd a { color: var(--ww-red); text-decoration: none; border-bottom: 1px solid currentColor; transition: opacity .15s ease; }
+.ww-about__sidebar dd a:hover { opacity: .7; }
 .ww-about__portrait {
   grid-column: 1 / 6;
   margin-top: clamp(40px, 5vw, 72px);
