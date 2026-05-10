@@ -387,6 +387,13 @@ button { font: inherit; color: inherit; }
   position: relative;
   overflow: hidden;
 }
+.ww-about__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+}
 .ww-about__quote {
   grid-column: 7 / 13;
   margin-top: clamp(40px, 5vw, 72px);
