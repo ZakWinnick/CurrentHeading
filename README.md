@@ -5,8 +5,8 @@ Brand homepage for [Wyld Wattage](https://wyldwattage.com), a YouTube channel re
 ## Stack
 
 - **[Astro](https://astro.build)** — static site framework
-- **[Tailwind CSS](https://tailwindcss.com)** — styling
-- **[Cloudflare Pages](https://pages.cloudflare.com)** — hosting + serverless functions
+- **[Tailwind CSS](https://tailwindcss.com)** v4 — styling
+- **[GitHub Pages](https://pages.github.com)** — hosting
 - **TypeScript** where it adds value
 
 ## Getting started
@@ -31,63 +31,69 @@ Dev server runs at `http://localhost:4321` by default.
 
 ```
 /
+├── .github/workflows/
+│   └── deploy.yml            # GitHub Pages build + deploy
 ├── public/                   # static assets
 │   ├── images/               # site imagery, including ww-logo.png
-│   └── favicon.ico
+│   ├── CNAME                 # custom domain (wyldwattage.com)
+│   └── robots.txt
 ├── src/
 │   ├── components/           # Astro components (one per section)
-│   ├── data/                 # content that changes more often than design
+│   ├── data/
 │   │   └── tiers.ts          # Patreon tier definitions
 │   ├── layouts/
 │   │   └── Base.astro        # base HTML shell
+│   ├── lib/
+│   │   ├── youtube.ts        # build-time YouTube fetch
+│   │   └── fourthwall.ts     # build-time Fourthwall fetch
 │   ├── pages/
-│   │   └── index.astro       # the homepage (single-page site)
+│   │   └── index.astro
 │   └── styles/
 │       └── global.css        # global styles + brand tokens
-├── functions/                # Cloudflare Pages Functions
-│   └── api/
-│       ├── youtube.ts        # YouTube API proxy
-│       └── shop.ts           # Fourthwall API proxy
 ├── astro.config.mjs
 └── package.json
 ```
 
 ## Environment variables
 
-Set these in the Cloudflare Pages dashboard (Settings → Environment variables):
+All integrations run at **build time**, so the values need to live in GitHub Actions, not in the deployed HTML.
 
-| Variable | Purpose |
-|----------|---------|
-| `YOUTUBE_API_KEY` | Google Cloud API key with YouTube Data API v3 enabled |
-| `YOUTUBE_CHANNEL_ID` | Channel ID for @wyldwattage (the `UC...` form) |
-| `BEHOLD_FEED_ID` | Behold widget ID for the Instagram embed |
-| `FOURTHWALL_PUBLIC_TOKEN` | Fourthwall public storefront token (the `ptkn_...` form) |
-| `FOURTHWALL_COLLECTION_SLUG` | Collection to feature in the Shop section (defaults to `all`) |
-| `FOURTHWALL_SHOP_HOST` | Storefront host for product URLs (defaults to `wyldwattage.store`) |
+Set these in **Settings → Secrets and variables → Actions** on the GitHub repo:
 
-For local development, copy `.env.example` to `.env` and fill in values.
+| Variable | Type | Purpose |
+|----------|------|---------|
+| `YOUTUBE_API_KEY` | secret | Google Cloud API key with YouTube Data API v3 enabled |
+| `YOUTUBE_CHANNEL_ID` | secret | Channel ID for @wyldwattage (the `UC...` form) |
+| `BEHOLD_FEED_ID` | secret | Behold widget ID for the Instagram embed |
+| `FOURTHWALL_PUBLIC_TOKEN` | secret | Fourthwall public storefront token (the `ptkn_...` form) |
+| `FOURTHWALL_COLLECTION_SLUG` | variable | Collection to feature in Shop (defaults to `all`) |
+| `FOURTHWALL_SHOP_HOST` | variable | Storefront host for product URLs (defaults to `wyldwattage.store`) |
+
+For local development, copy `.env.example` to `.env` and fill in values. `.env` is gitignored.
 
 ## Content updates
 
 Most content changes don't require touching component code:
 
 - **Patreon tiers and perks** → edit `src/data/tiers.ts`
-- **Latest videos** → pulled live from YouTube API, no manual updates needed
-- **Instagram posts** → managed via [Behold](https://behold.so) dashboard
-- **Shop products** → pulled live from Fourthwall Storefront API
+- **Latest videos** → pulled from YouTube API at build time. Workflow rebuilds nightly.
+- **Instagram posts** → managed via [Behold](https://behold.so) dashboard, no rebuild needed
+- **Shop products** → pulled from Fourthwall Storefront API at build time. Workflow rebuilds nightly.
 
 Anything else (hero copy, About section, etc.) lives in the relevant component file in `src/components/`.
+
+To force a refresh outside the nightly schedule, push to `main` or run the workflow manually from the Actions tab.
 
 ## External integrations
 
 ### YouTube
-Pulls latest videos via YouTube Data API v3 using the `playlistItems.list` endpoint against the channel's uploads playlist. Cached at build time. Site rebuilds daily to refresh.
+Pulls latest videos via YouTube Data API v3 using the `playlistItems.list` endpoint against the channel's uploads playlist (the `UC...` channel ID is converted to `UU...` to get the uploads playlist). Falls back to placeholder cards if env vars are missing.
 
 ### Instagram
-Embedded via Behold (Pro plan). Widget config managed in the Behold dashboard, not in this repo.
+Embedded via Behold (Pro plan). The Behold script renders the widget client-side using the configured `BEHOLD_FEED_ID`. Widget layout managed in the Behold dashboard.
 
 ### Fourthwall (Shop)
-Storefront API proxy lives in `functions/api/shop.ts`. Falls back to a single CTA linking to [wyldwattage.store](https://wyldwattage.store) if the API is unavailable. Don't show broken product cards.
+Build-time fetch from `storefront-api.fourthwall.com/v1/collections/{slug}/products` using the public storefront token. Falls back to a single CTA linking to [wyldwattage.store](https://wyldwattage.store) if the API is unavailable. Don't show broken product cards.
 
 ### Patreon
 External link only, no API. Points to [members.wyldwattage.com](https://members.wyldwattage.com).
@@ -111,18 +117,24 @@ Logo files live in `public/images/`. Use `ww-logo.png` for the WW monogram.
 ## Style notes
 
 - **No em dashes anywhere.** Use periods, commas, "and", or restructure the sentence.
-- **No hashtag strategy** — channel doesn't use them, neither does the site.
+- **No hashtag strategy.** The channel doesn't use them, neither does the site.
 - **Voice:** Smart not smug, bold not bro-y, blunt humor welcome especially around infrastructure critique.
 
 ## Deployment
 
-Pushes to `main` auto-deploy to Cloudflare Pages.
+Pushes to `main` auto-deploy via GitHub Actions to GitHub Pages.
 
 - Build command: `npm run build`
 - Output directory: `dist`
-- Custom domain: `wyldwattage.com`
+- Custom domain: `wyldwattage.com` (managed via `public/CNAME` and the GitHub Pages settings)
+- Nightly rebuild at 11:00 UTC keeps videos and shop data fresh
 
-Preview deployments are generated for every PR.
+**One-time setup**
+
+1. Add the repo secrets and variables listed above.
+2. In **Settings → Pages**, set the source to **GitHub Actions**.
+3. Point the `wyldwattage.com` DNS at GitHub Pages (`A` records to GitHub IPs, plus a `CNAME` for `www`).
+4. Push to `main`. The workflow builds and deploys.
 
 ## Performance targets
 
@@ -134,9 +146,9 @@ Preview deployments are generated for every PR.
 
 These are intentional. Don't "fix" them in cleanup passes:
 
-- Podcast platform links (`#`) — podcast not yet launched
-- "Press & sponsorship" footer link — not set up yet
-- "Tip line — bad sites" footer link — not built yet
+- Podcast platform links (`#`). Podcast not yet launched.
+- "Press and sponsorship" footer link. Not set up yet.
+- "Tip line. Bad sites." footer link. Not built yet.
 
 Update these when the underlying thing exists.
 

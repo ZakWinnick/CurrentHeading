@@ -1,8 +1,8 @@
 ---
 import Icon from "./icons.astro";
+import { fetchShopProducts } from "../lib/fourthwall";
 
-// Products are fetched client-side from /api/shop (Cloudflare Pages Function).
-// On any failure (no env vars locally, API down, etc.) the fallback CTA stays.
+const products = await fetchShopProducts();
 ---
 <section class="ww-section" id="shop">
   <div class="ww-section-num ww-mono">§ 07 / Goods</div>
@@ -26,56 +26,29 @@ import Icon from "./icons.astro";
           Visit the shop <Icon kind="arrow" />
         </a>
       </div>
-      <div class="ww-shop__products" id="ww-shop-products">
-        <a class="ww-shop__fallback" href="https://wyldwattage.store" target="_blank" rel="noopener" data-shop-fallback>
-          <span class="ww-eyebrow">Latest drops</span>
-          <span class="ww-display" style="font-size: clamp(22px, 2.4vw, 36px); color: var(--ww-paper); margin: 0;">
-            Browse the shop
-          </span>
-          <span style="display: inline-flex; align-items: center; gap: 8px; color: var(--ww-bone);">
-            wyldwattage.store <Icon kind="arrow" />
-          </span>
-        </a>
+      <div class="ww-shop__products">
+        {products.length > 0 ? (
+          products.map((p, i) => (
+            <a class="ww-shop__product" href={p.url} target="_blank" rel="noopener">
+              {p.image && <img class="pimg" src={p.image} alt="" loading="lazy" decoding="async" />}
+              <span class="pscrim"></span>
+              <span class="pname">{p.name}</span>
+              <span class="pprice">{p.price}</span>
+              <span class="pmark">{String(i + 1).padStart(2, "0")}</span>
+            </a>
+          ))
+        ) : (
+          <a class="ww-shop__fallback" href="https://wyldwattage.store" target="_blank" rel="noopener">
+            <span class="ww-eyebrow">Latest drops</span>
+            <span class="ww-display" style="font-size: clamp(22px, 2.4vw, 36px); color: var(--ww-paper); margin: 0;">
+              Browse the shop
+            </span>
+            <span style="display: inline-flex; align-items: center; gap: 8px; color: var(--ww-bone);">
+              wyldwattage.store <Icon kind="arrow" />
+            </span>
+          </a>
+        )}
       </div>
     </div>
   </div>
 </section>
-
-<script>
-  type Product = { id: string; name: string; price: string; image: string; url: string };
-
-  async function loadProducts() {
-    const grid = document.getElementById("ww-shop-products");
-    if (!grid) return;
-    try {
-      const res = await fetch("/api/shop", { headers: { accept: "application/json" } });
-      if (!res.ok) return;
-      const data = (await res.json()) as { products: Product[] };
-      if (!data.products?.length) return;
-
-      grid.innerHTML = data.products
-        .map(
-          (p, i) => `
-          <a class="ww-shop__product" href="${escapeAttr(p.url)}" target="_blank" rel="noopener">
-            ${p.image ? `<img class="pimg" src="${escapeAttr(p.image)}" alt="" loading="lazy" decoding="async" />` : ""}
-            <span class="pscrim"></span>
-            <span class="pname">${escapeHtml(p.name)}</span>
-            <span class="pprice">${escapeHtml(p.price)}</span>
-            <span class="pmark">${String(i + 1).padStart(2, "0")}</span>
-          </a>`,
-        )
-        .join("");
-    } catch {
-      // Keep fallback in place.
-    }
-  }
-
-  function escapeHtml(s: string): string {
-    return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
-  }
-  function escapeAttr(s: string): string {
-    return escapeHtml(s);
-  }
-
-  loadProducts();
-</script>
