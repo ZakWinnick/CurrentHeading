@@ -1,0 +1,23 @@
+---
+const items = [
+  "Site reviews",
+  "Network takes",
+  "Road trip diaries",
+  "Operator notes",
+  "Hardware that lies",
+  "Sites that work",
+  "Concrete and kilowatts",
+  "Reservations welcome",
+];
+const all = [...items, ...items];
+---
+<div class="ww-marquee" aria-hidden="true">
+  <div class="ww-marquee__track">
+    {all.map((t) => (
+      <span class="ww-marquee__item">
+        <i class="dot"></i>
+        {t}
+      </span>
+    ))}
+  </div>
+</div>

@@ -1,0 +1,51 @@
+---
+import Icon from "./icons.astro";
+import { TIERS } from "../data/tiers";
+---
+<section class="ww-section ww-section--red" id="patreon">
+  <div class="ww-section-num ww-mono">§ 06 / Members</div>
+  <div class="ww-container">
+    <div class="ww-eyebrow-row">
+      <span class="ww-eyebrow"><span class="ww-idx" style="color: var(--ww-black);">05</span> &nbsp; Community</span>
+      <span class="ww-bar"></span>
+      <span class="ww-eyebrow">members.wyldwattage.com</span>
+    </div>
+    <div class="ww-patreon__head">
+      <h2>
+        Be excellent<br />
+        to each other.<br />
+        Then go review<br />
+        a bad site.
+      </h2>
+      <p>
+        Patreon keeps the channel honest. No sponsorships from networks I've
+        reviewed, no advertorial site visits. Three tiers, one Discord
+        (we call it The Charging Booth), and a small group of people who
+        care about this stuff as much as I do.
+      </p>
+    </div>
+
+    <div class="ww-patreon__tiers">
+      {TIERS.map((t) => (
+        <div class={"ww-tier" + (t.featured ? " ww-tier--featured" : "")}>
+          <span class="ww-tier__id">{t.id}{t.featured ? " · Most popular" : ""}</span>
+          <div class="ww-tier__name">{t.name}</div>
+          <div class="ww-tier__price">${t.price}<span class="unit">/ month</span></div>
+          <ul class="ww-tier__perks">
+            {t.perks.map((p) => <li>{p}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="ww-patreon__cta">
+      <a class="ww-btn ww-btn--inverse" href="https://members.wyldwattage.com" target="_blank" rel="noopener">
+        Join on Patreon <Icon kind="arrow" />
+      </a>
+      <a class="ww-discord" href="https://members.wyldwattage.com" target="_blank" rel="noopener">
+        <Icon kind="discord" />
+        The Charging Booth
+      </a>
+    </div>
+  </div>
+</section>

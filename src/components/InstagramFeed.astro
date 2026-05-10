@@ -1,0 +1,57 @@
+---
+import Icon from "./icons.astro";
+
+// Behold widget. Create the feed at https://behold.so, then set
+// BEHOLD_FEED_ID in Cloudflare Pages env vars (and locally in .env).
+// If unset, a quiet CTA card renders instead so the section never breaks.
+const beholdId = import.meta.env.BEHOLD_FEED_ID;
+---
+<section class="ww-section" id="instagram">
+  <div class="ww-section-num ww-mono">§ 05 / Field</div>
+  <div class="ww-container">
+    <div class="ww-eyebrow-row">
+      <span class="ww-eyebrow"><span class="ww-idx">04</span> &nbsp; On Instagram</span>
+      <span class="ww-bar"></span>
+      <span class="ww-ig__handle">
+        <Icon kind="ig" />
+        @wyldwattage
+      </span>
+    </div>
+
+    <div class="ww-videos__head" style="align-items: flex-end;">
+      <h2 class="ww-display" style="font-size: var(--ww-h1); margin: 0; color: var(--ww-paper);">
+        More from the road.
+      </h2>
+      <a href="https://instagram.com/wyldwattage" target="_blank" rel="noopener" class="ww-ig__follow">
+        Follow <Icon kind="arrow" />
+      </a>
+    </div>
+
+    <div class="ww-ig__embed">
+      {beholdId ? (
+        <behold-widget feed-id={beholdId}></behold-widget>
+      ) : (
+        <a
+          href="https://instagram.com/wyldwattage"
+          target="_blank"
+          rel="noopener"
+          style="display: flex; flex-direction: column; gap: 12px; padding: clamp(24px, 3vw, 40px); border: 1px solid var(--ww-line); background: var(--ww-ink-1); color: var(--ww-paper); align-items: flex-start;"
+        >
+          <span class="ww-eyebrow">Instagram feed</span>
+          <span class="ww-display" style="font-size: clamp(22px, 2.4vw, 36px); margin: 0;">
+            See the latest on Instagram.
+          </span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; color: var(--ww-bone);">
+            instagram.com/wyldwattage <Icon kind="arrow" />
+          </span>
+        </a>
+      )}
+    </div>
+
+    <div class="ww-ig__note">
+      Embed: behold.so · most recent posts · auto-refresh
+    </div>
+  </div>
+</section>
+
+{beholdId && <script src="https://w.behold.so/widget.js" type="module"></script>}

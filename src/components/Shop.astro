@@ -1,0 +1,81 @@
+---
+import Icon from "./icons.astro";
+
+// Products are fetched client-side from /api/shop (Cloudflare Pages Function).
+// On any failure (no env vars locally, API down, etc.) the fallback CTA stays.
+---
+<section class="ww-section" id="shop">
+  <div class="ww-section-num ww-mono">§ 07 / Goods</div>
+  <div class="ww-container">
+    <div class="ww-eyebrow-row">
+      <span class="ww-eyebrow"><span class="ww-idx">06</span> &nbsp; The Shop</span>
+      <span class="ww-bar"></span>
+      <span class="ww-eyebrow">wyldwattage.store</span>
+    </div>
+    <div class="ww-shop">
+      <div class="ww-shop__copy">
+        <h2 class="ww-display" style="font-size: var(--ww-h1); color: var(--ww-paper); margin: 0;">
+          Tees, hats,<br />and one zine.
+        </h2>
+        <p>
+          Small drops, no bullshit. Made in California, shipped from a small
+          warehouse in Oakland. If you wear it to a charging site, send a
+          photo to the Discord.
+        </p>
+        <a class="ww-btn ww-btn--primary" href="https://wyldwattage.store" target="_blank" rel="noopener">
+          Visit the shop <Icon kind="arrow" />
+        </a>
+      </div>
+      <div class="ww-shop__products" id="ww-shop-products">
+        <a class="ww-shop__fallback" href="https://wyldwattage.store" target="_blank" rel="noopener" data-shop-fallback>
+          <span class="ww-eyebrow">Latest drops</span>
+          <span class="ww-display" style="font-size: clamp(22px, 2.4vw, 36px); color: var(--ww-paper); margin: 0;">
+            Browse the shop
+          </span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; color: var(--ww-bone);">
+            wyldwattage.store <Icon kind="arrow" />
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  type Product = { id: string; name: string; price: string; image: string; url: string };
+
+  async function loadProducts() {
+    const grid = document.getElementById("ww-shop-products");
+    if (!grid) return;
+    try {
+      const res = await fetch("/api/shop", { headers: { accept: "application/json" } });
+      if (!res.ok) return;
+      const data = (await res.json()) as { products: Product[] };
+      if (!data.products?.length) return;
+
+      grid.innerHTML = data.products
+        .map(
+          (p, i) => `
+          <a class="ww-shop__product" href="${escapeAttr(p.url)}" target="_blank" rel="noopener">
+            ${p.image ? `<img class="pimg" src="${escapeAttr(p.image)}" alt="" loading="lazy" decoding="async" />` : ""}
+            <span class="pscrim"></span>
+            <span class="pname">${escapeHtml(p.name)}</span>
+            <span class="pprice">${escapeHtml(p.price)}</span>
+            <span class="pmark">${String(i + 1).padStart(2, "0")}</span>
+          </a>`,
+        )
+        .join("");
+    } catch {
+      // Keep fallback in place.
+    }
+  }
+
+  function escapeHtml(s: string): string {
+    return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
+  }
+  function escapeAttr(s: string): string {
+    return escapeHtml(s);
+  }
+
+  loadProducts();
+</script>

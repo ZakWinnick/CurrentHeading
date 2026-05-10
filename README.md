@@ -49,7 +49,6 @@ Dev server runs at `http://localhost:4321` by default.
 │       ├── youtube.ts        # YouTube API proxy
 │       └── shop.ts           # Fourthwall API proxy
 ├── astro.config.mjs
-├── tailwind.config.mjs
 └── package.json
 ```
 
@@ -60,8 +59,11 @@ Set these in the Cloudflare Pages dashboard (Settings → Environment variables)
 | Variable | Purpose |
 |----------|---------|
 | `YOUTUBE_API_KEY` | Google Cloud API key with YouTube Data API v3 enabled |
-| `YOUTUBE_CHANNEL_ID` | Channel ID for @wyldwattage |
-| `FOURTHWALL_API_KEY` | Fourthwall Storefront API key (if required) |
+| `YOUTUBE_CHANNEL_ID` | Channel ID for @wyldwattage (the `UC...` form) |
+| `BEHOLD_FEED_ID` | Behold widget ID for the Instagram embed |
+| `FOURTHWALL_PUBLIC_TOKEN` | Fourthwall public storefront token (the `ptkn_...` form) |
+| `FOURTHWALL_COLLECTION_SLUG` | Collection to feature in the Shop section (defaults to `all`) |
+| `FOURTHWALL_SHOP_HOST` | Storefront host for product URLs (defaults to `wyldwattage.store`) |
 
 For local development, copy `.env.example` to `.env` and fill in values.
 
@@ -95,7 +97,7 @@ Wyld Wramblings hasn't launched yet. Platform links (Apple Podcasts, Spotify, Ov
 
 ## Brand tokens
 
-Defined in `tailwind.config.mjs`:
+Defined as CSS custom properties (and Tailwind v4 `@theme` tokens) in `src/styles/global.css`:
 
 | Token | Value |
 |-------|-------|

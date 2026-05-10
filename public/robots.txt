@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wyldwattage.com/sitemap-index.xml

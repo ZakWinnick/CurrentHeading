@@ -1,0 +1,56 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Wyld Wattage. DC fast charging, reviewed by an operator.",
+  description = "Site reviews, network takes, and the occasional rant from Zak Winnick, founder of Rangeway Energy and the only charging YouTuber who pours concrete.",
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content="/images/hero-r1t.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@wyldwattage" />
+
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/images/ww-logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+  />
+</head>
+<body>
+  <slot />
+
+  <div class="ww-texture-layer is-scan" aria-hidden="true"></div>
+
+  <script>
+    const nav = document.querySelector(".ww-nav");
+    if (nav) {
+      const setStuck = () => nav.classList.toggle("is-stuck", window.scrollY > 24);
+      setStuck();
+      window.addEventListener("scroll", setStuck, { passive: true });
+    }
+  </script>
+</body>
+</html>

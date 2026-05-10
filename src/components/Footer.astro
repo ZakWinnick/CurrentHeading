@@ -1,0 +1,46 @@
+---
+import Icon from "./icons.astro";
+const year = new Date().getFullYear();
+---
+<footer class="ww-footer">
+  <div class="ww-footer__inner">
+    <div class="ww-footer__brand">
+      <img src="/images/ww-logo.png" alt="Wyld Wattage" width="48" height="48" />
+      <div class="ww-nav__wordmark" style="font-size: 18px;">Wyld Wattage</div>
+      <p>
+        DC fast charging, reviewed by an operator. Made between Napa
+        and wherever the next bad plug is.
+      </p>
+    </div>
+    <div>
+      <h4>Channel</h4>
+      <ul>
+        <li><a href="https://youtube.com/@wyldwattage" target="_blank" rel="noopener"><Icon kind="yt" />YouTube</a></li>
+        <li><a href="#podcast">Wyld Wramblings</a></li>
+        <li><a href="https://wyldwattage.store" target="_blank" rel="noopener">Shop</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Around</h4>
+      <ul>
+        <li><a href="https://instagram.com/wyldwattage" target="_blank" rel="noopener"><Icon kind="ig" />Instagram</a></li>
+        <li><a href="https://x.com/zakwinnick" target="_blank" rel="noopener"><Icon kind="x" />@ZakWinnick</a></li>
+        <li><a href="https://members.wyldwattage.com" target="_blank" rel="noopener"><Icon kind="patreon" />Patreon</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <ul>
+        <li><a href="mailto:hello@wyldwattage.com">hello@wyldwattage.com</a></li>
+        {/* Placeholder. Press inbox not set up yet. Update when it is. */}
+        <li><a href="#">Press and sponsorship</a></li>
+        {/* Placeholder. Tip line not built yet. Update when it is. */}
+        <li><a href="#">Tip line. Bad sites.</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ww-footer__bar">
+    <span>© {year} Wyld Media</span>
+    <span>No network has paid for a review on this channel. No network ever will.</span>
+  </div>
+</footer>
