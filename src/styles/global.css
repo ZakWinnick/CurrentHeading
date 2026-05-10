@@ -692,14 +692,6 @@ button { font: inherit; color: inherit; }
   gap: 8px;
 }
 .ww-ig__follow:hover { color: var(--ww-red); }
-.ww-ig__note {
-  margin-top: 24px;
-  font-family: var(--ww-mono);
-  font-size: 11px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--ww-mute);
-}
 
 /* ── Patreon ────────────────────────────────────────────────────────── */
 .ww-patreon__head { max-width: 880px; margin: 0 0 clamp(40px, 5vw, 72px); }
