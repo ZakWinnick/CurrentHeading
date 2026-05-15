@@ -378,6 +378,8 @@ button { font: inherit; color: inherit; }
 .ww-about__sidebar dt { font-family: var(--ww-mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--ww-mute); }
 .ww-about__sidebar dd { margin: 4px 0 0; color: var(--ww-paper); font-size: 15px; line-height: 1.45; }
 .ww-about__sidebar dd em { color: var(--ww-red); font-style: normal; }
+.ww-about__sidebar dd a { color: var(--ww-red); text-decoration: none; border-bottom: 1px solid currentColor; transition: opacity .15s ease; }
+.ww-about__sidebar dd a:hover { opacity: .7; }
 .ww-about__portrait {
   grid-column: 1 / 6;
   margin-top: clamp(40px, 5vw, 72px);
@@ -587,61 +589,11 @@ button { font: inherit; color: inherit; }
   overflow: hidden;
   border: 1px solid var(--ww-line);
 }
-.ww-podcast__art-glow {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(60% 50% at 30% 35%, rgba(228,74,38,.55), transparent 60%),
-    radial-gradient(50% 60% at 80% 80%, rgba(228,74,38,.25), transparent 60%),
-    var(--ww-ink-1);
-  filter: contrast(1.05);
-}
-.ww-podcast__art-content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: clamp(18px, 2.4vw, 32px);
-}
-.ww-podcast__art-title {
-  font-family: var(--ww-display);
-  font-weight: 800;
-  font-size: clamp(40px, 6vw, 84px);
-  letter-spacing: -0.025em;
-  line-height: 0.88;
-  color: var(--ww-paper);
-  text-transform: uppercase;
-  text-wrap: balance;
-}
-.ww-podcast__art-foot {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
-  color: var(--ww-bone);
-}
-.ww-podcast__art-foot .ww-mono { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; }
-.ww-podcast__art-foot img { width: 48px; height: 48px; }
-.ww-podcast__art-wave {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 30%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 0 clamp(18px, 2.4vw, 32px) clamp(64px, 8vw, 100px);
-  gap: 3px;
-  pointer-events: none;
-  opacity: .55;
-}
-.ww-podcast__art-wave i {
-  flex: 1;
-  background: var(--ww-paper);
-  border-radius: 2px;
-  min-height: 4px;
+.ww-podcast__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .ww-podcast__copy h2 { margin: 0 0 16px; }
 .ww-podcast__copy p {
@@ -740,14 +692,6 @@ button { font: inherit; color: inherit; }
   gap: 8px;
 }
 .ww-ig__follow:hover { color: var(--ww-red); }
-.ww-ig__note {
-  margin-top: 24px;
-  font-family: var(--ww-mono);
-  font-size: 11px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--ww-mute);
-}
 
 /* ── Patreon ────────────────────────────────────────────────────────── */
 .ww-patreon__head { max-width: 880px; margin: 0 0 clamp(40px, 5vw, 72px); }
@@ -843,10 +787,22 @@ button { font: inherit; color: inherit; }
   background: var(--ww-red);
   margin-top: 9px;
 }
+.ww-tier__copy {
+  margin: auto 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--ww-line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--ww-bone);
+}
+.ww-tier__copy p { margin: 0; line-height: 1.5; }
 .ww-tier--featured { background: var(--ww-paper); color: var(--ww-black); }
 .ww-tier--featured .ww-tier__id { color: var(--ww-red-dim); }
 .ww-tier--featured .ww-tier__perks { border-top-color: rgba(0,0,0,.12); color: var(--ww-ink-3); }
 .ww-tier--featured .ww-tier__perks li::before { background: var(--ww-red-dim); }
+.ww-tier--featured .ww-tier__copy { border-top-color: rgba(0,0,0,.12); color: var(--ww-ink-3); }
 .ww-tier--featured .ww-tier__price .unit { color: var(--ww-mute); }
 
 .ww-patreon__cta {
@@ -1041,18 +997,6 @@ button { font: inherit; color: inherit; }
   background: var(--ww-black);
 }
 
-/* ── Section index helpers ──────────────────────────────────────────── */
-.ww-section-num {
-  position: absolute;
-  top: clamp(28px, 3vw, 48px);
-  right: clamp(20px, 4vw, 64px);
-  font-family: var(--ww-mono);
-  font-size: 11px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--ww-mute);
-}
-.ww-section--red .ww-section-num { color: rgba(0,0,0,.55); }
 
 /* ── Sticky-nav-aware scroll offsets ────────────────────────────────── */
 section[id] { scroll-margin-top: 64px; }

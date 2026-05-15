@@ -3,14 +3,23 @@ import Icon from "./icons.astro";
 import { fetchLatestVideos } from "../lib/youtube";
 
 const videos = await fetchLatestVideos(6);
+
+const dateFmt = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
+const formatDate = (iso: string) => {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? "" : dateFmt.format(d);
+};
 ---
 <section class="ww-section" id="videos">
-  <div class="ww-section-num ww-mono">§ 03 / Videos</div>
   <div class="ww-container">
     <div class="ww-eyebrow-row">
       <span class="ww-eyebrow"><span class="ww-idx">02</span> &nbsp; The Channel</span>
       <span class="ww-bar"></span>
-      <span class="ww-eyebrow">Pulled live via YouTube API</span>
+      <span class="ww-eyebrow">youtube.com/@wyldwattage</span>
     </div>
     <div class="ww-videos__head">
       <h2 class="ww-display" style="font-size: var(--ww-h1); margin: 0; color: var(--ww-paper);">
@@ -38,7 +47,7 @@ const videos = await fetchLatestVideos(6);
             {v.duration && <div class="ww-video__duration">{v.duration}</div>}
           </div>
           <div class="ww-video__meta">
-            <span class="tag">{v.tag}</span>
+            <span class="tag">{formatDate(v.publishedAt)}</span>
             {v.views && <><span>·</span><span>{v.views} views</span></>}
           </div>
           <h3 class="ww-video__title">{v.title}</h3>

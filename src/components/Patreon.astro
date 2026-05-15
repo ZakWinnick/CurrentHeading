@@ -1,14 +1,40 @@
 ---
 import Icon from "./icons.astro";
 import { TIERS } from "../data/tiers";
+import { fetchPatreonStats } from "../lib/patreon";
+
+const stats = await fetchPatreonStats();
+
+// API tiers when available, otherwise the static fallback. Mark the middle
+// tier as featured when there are 3+ tiers (matches the editorial layout).
+const liveTiers = stats?.tiers ?? null;
+const tiers = liveTiers
+  ? liveTiers.map((t, i) => ({
+      id: `T-${String(i + 1).padStart(2, "0")}`,
+      name: t.name,
+      price: t.price,
+      paragraphs: t.paragraphs,
+      featured: liveTiers.length >= 3 && i === 1,
+    }))
+  : TIERS.map((t) => ({
+      id: t.id,
+      name: t.name,
+      price: t.price,
+      paragraphs: null as string[] | null,
+      perks: t.perks,
+      featured: t.featured ?? false,
+    }));
 ---
 <section class="ww-section ww-section--red" id="patreon">
-  <div class="ww-section-num ww-mono">§ 06 / Members</div>
   <div class="ww-container">
     <div class="ww-eyebrow-row">
       <span class="ww-eyebrow"><span class="ww-idx" style="color: var(--ww-black);">05</span> &nbsp; Community</span>
       <span class="ww-bar"></span>
-      <span class="ww-eyebrow">members.wyldwattage.com</span>
+      <span class="ww-eyebrow">
+        {stats && stats.patronCount > 0
+          ? `${stats.patronCount.toLocaleString()} patrons strong`
+          : "members.wyldwattage.com"}
+      </span>
     </div>
     <div class="ww-patreon__head">
       <h2>
@@ -26,14 +52,20 @@ import { TIERS } from "../data/tiers";
     </div>
 
     <div class="ww-patreon__tiers">
-      {TIERS.map((t) => (
+      {tiers.map((t) => (
         <div class={"ww-tier" + (t.featured ? " ww-tier--featured" : "")}>
           <span class="ww-tier__id">{t.id}{t.featured ? " · Most popular" : ""}</span>
           <div class="ww-tier__name">{t.name}</div>
           <div class="ww-tier__price">${t.price}<span class="unit">/ month</span></div>
-          <ul class="ww-tier__perks">
-            {t.perks.map((p) => <li>{p}</li>)}
-          </ul>
+          {t.paragraphs ? (
+            <div class="ww-tier__copy">
+              {t.paragraphs.map((p) => <p>{p}</p>)}
+            </div>
+          ) : (
+            <ul class="ww-tier__perks">
+              {(t as { perks: string[] }).perks.map((p) => <li>{p}</li>)}
+            </ul>
+          )}
         </div>
       ))}
     </div>
