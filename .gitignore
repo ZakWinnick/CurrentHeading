@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # Cloudflare Wrangler
 .wrangler/
+.claude/worktrees/angry-gould-097084/
