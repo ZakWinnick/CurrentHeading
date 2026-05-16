@@ -19,7 +19,7 @@ export const TIERS: Tier[] = [
     name: "Be Excellent!",
     price: "10",
     perks: [
-      "Access to The Charging Booth Discord",
+      "Access to The Charging Hangar Discord",
       "Early-cut posts before YouTube",
       "Patron-only sticker pack, mailed",
     ],
