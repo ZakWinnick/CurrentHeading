@@ -26,3 +26,8 @@ pnpm-debug.log*
 # Cloudflare Wrangler
 .wrangler/
 .claude/worktrees/angry-gould-097084/
+.playwright-mcp/page-2026-05-16T05-53-33-848Z.yml
+.playwright-mcp/console-2026-05-16T05-52-50-012Z.log
+.playwright-mcp/console-2026-05-16T05-53-02-435Z.log
+.playwright-mcp/page-2026-05-16T05-52-50-857Z.yml
+.playwright-mcp/page-2026-05-16T05-53-02-689Z.yml
