@@ -4,7 +4,7 @@
 // Env vars (GitHub Actions secrets, local .env):
 //   FOURTHWALL_PUBLIC_TOKEN       Public storefront token (the "ptkn_..." form)
 //   FOURTHWALL_COLLECTION_SLUG    Collection to feature (default: "all")
-//   FOURTHWALL_SHOP_HOST          Storefront host for product URLs (default: "wyldwattage.store")
+//   FOURTHWALL_SHOP_HOST          Storefront host for product URLs (default: "shop.currentheading.com")
 //
 // On any failure (missing token, network, schema drift) returns []. The
 // Shop component renders its CTA fallback when the list is empty.
@@ -39,7 +39,7 @@ export async function fetchShopProducts(): Promise<ShopProduct[]> {
   }
 
   const collection = import.meta.env.FOURTHWALL_COLLECTION_SLUG ?? "all";
-  const host = import.meta.env.FOURTHWALL_SHOP_HOST ?? "wyldwattage.store";
+  const host = import.meta.env.FOURTHWALL_SHOP_HOST ?? "shop.currentheading.com";
   const url =
     `https://storefront-api.fourthwall.com/v1/collections/${encodeURIComponent(collection)}/products` +
     `?currency=USD&storefront_token=${encodeURIComponent(token)}`;

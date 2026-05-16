@@ -45,7 +45,7 @@ Dev server runs at `http://localhost:4321` by default.
 │   │   └── Base.astro        # base HTML shell
 │   ├── lib/
 │   │   ├── youtube.ts        # build-time YouTube fetch
-│   │   └── fourthwall.ts     # build-time Fourthwall fetch (Shop currently disabled)
+│   │   └── fourthwall.ts     # build-time Fourthwall fetch
 │   ├── pages/
 │   │   └── index.astro
 │   └── styles/
@@ -93,7 +93,7 @@ Pulls latest videos via YouTube Data API v3 using the `playlistItems.list` endpo
 Embedded via Behold (Pro plan). The Behold script renders the widget client-side using the configured `BEHOLD_FEED_ID`. Widget layout managed in the Behold dashboard.
 
 ### Fourthwall (Shop)
-Currently disabled. The `<Shop />` component is commented out in `src/pages/index.astro` while merch is updated for the Current Heading brand. The component and its lib are preserved for easy restore.
+Build-time fetch of the latest products from the Fourthwall Storefront API using `FOURTHWALL_PUBLIC_TOKEN`. Renders up to four product cards; falls back to a CTA pointing at `shop.currentheading.com` when the token is missing or the fetch fails.
 
 ### Patreon
 External link only, no API. Points to [members.currentheading.com](https://members.currentheading.com).
@@ -152,7 +152,6 @@ These are intentional. Don't "fix" them in cleanup passes:
 
 - Podcast platform links (`#`). Podcast not yet launched.
 - OG card image (`/images/og-card.jpg`). To be designed.
-- Shop section commented out. Restore once merch is updated.
 
 Update these when the underlying thing exists.
 
