@@ -1,6 +1,6 @@
-# Wyld Wattage
+# Current Heading
 
-Brand homepage for [Wyld Wattage](https://wyldwattage.com), a YouTube channel reviewing DC fast charging sites from an operator's POV.
+Brand homepage for [Current Heading](https://currentheading.com), a YouTube channel covering EV ownership, DC fast charging, and aviation.
 
 ## Stack
 
@@ -34,8 +34,8 @@ Dev server runs at `http://localhost:4321` by default.
 ├── .github/workflows/
 │   └── deploy.yml            # GitHub Pages build + deploy
 ├── public/                   # static assets
-│   ├── images/               # site imagery, including ww-logo.png
-│   ├── CNAME                 # custom domain (wyldwattage.com)
+│   ├── images/               # site imagery, including current-heading-* logos
+│   ├── CNAME                 # custom domain (currentheading.com)
 │   └── robots.txt
 ├── src/
 │   ├── components/           # Astro components (one per section)
@@ -45,7 +45,7 @@ Dev server runs at `http://localhost:4321` by default.
 │   │   └── Base.astro        # base HTML shell
 │   ├── lib/
 │   │   ├── youtube.ts        # build-time YouTube fetch
-│   │   └── fourthwall.ts     # build-time Fourthwall fetch
+│   │   └── fourthwall.ts     # build-time Fourthwall fetch (Shop currently disabled)
 │   ├── pages/
 │   │   └── index.astro
 │   └── styles/
@@ -63,11 +63,11 @@ Set these in **Settings → Secrets and variables → Actions** on the GitHub re
 | Variable | Type | Purpose |
 |----------|------|---------|
 | `YOUTUBE_API_KEY` | secret | Google Cloud API key with YouTube Data API v3 enabled |
-| `YOUTUBE_CHANNEL_ID` | secret | Channel ID for @wyldwattage (the `UC...` form) |
+| `YOUTUBE_CHANNEL_ID` | secret | Channel ID for @currentheading (the `UC...` form) |
 | `BEHOLD_FEED_ID` | secret | Behold widget ID for the Instagram embed |
 | `FOURTHWALL_PUBLIC_TOKEN` | secret | Fourthwall public storefront token (the `ptkn_...` form) |
 | `FOURTHWALL_COLLECTION_SLUG` | variable | Collection to feature in Shop (defaults to `all`) |
-| `FOURTHWALL_SHOP_HOST` | variable | Storefront host for product URLs (defaults to `wyldwattage.store`) |
+| `FOURTHWALL_SHOP_HOST` | variable | Storefront host for product URLs |
 
 For local development, copy `.env.example` to `.env` and fill in values. `.env` is gitignored.
 
@@ -78,7 +78,7 @@ Most content changes don't require touching component code:
 - **Patreon tiers and perks** → edit `src/data/tiers.ts`
 - **Latest videos** → pulled from YouTube API at build time. Workflow rebuilds nightly.
 - **Instagram posts** → managed via [Behold](https://behold.so) dashboard, no rebuild needed
-- **Shop products** → pulled from Fourthwall Storefront API at build time. Workflow rebuilds nightly.
+- **Shop products** → pulled from Fourthwall Storefront API at build time. Section currently disabled during rebrand.
 
 Anything else (hero copy, About section, etc.) lives in the relevant component file in `src/components/`.
 
@@ -93,26 +93,30 @@ Pulls latest videos via YouTube Data API v3 using the `playlistItems.list` endpo
 Embedded via Behold (Pro plan). The Behold script renders the widget client-side using the configured `BEHOLD_FEED_ID`. Widget layout managed in the Behold dashboard.
 
 ### Fourthwall (Shop)
-Build-time fetch from `storefront-api.fourthwall.com/v1/collections/{slug}/products` using the public storefront token. Falls back to a single CTA linking to [wyldwattage.store](https://wyldwattage.store) if the API is unavailable. Don't show broken product cards.
+Currently disabled. The `<Shop />` component is commented out in `src/pages/index.astro` while merch is updated for the Current Heading brand. The component and its lib are preserved for easy restore.
 
 ### Patreon
-External link only, no API. Points to [members.wyldwattage.com](https://members.wyldwattage.com).
+External link only, no API. Points to [members.currentheading.com](https://members.currentheading.com).
 
 ### Podcast
 Wyld Wramblings hasn't launched yet. Platform links (Apple Podcasts, Spotify, Overcast, RSS) are intentional placeholders. Update them when the podcast goes live.
 
 ## Brand tokens
 
-Defined as CSS custom properties (and Tailwind v4 `@theme` tokens) in `src/styles/global.css`:
+Defined as CSS custom properties (and Tailwind v4 `@theme` tokens) in `src/styles/global.css`.
 
-| Token | Value |
-|-------|-------|
-| Background | `#000000` |
-| Primary accent | `#e44a26` |
-| Text primary | `#ffffff` |
-| Text secondary | derived from design spec |
+Current Heading palette:
 
-Logo files live in `public/images/`. Use `ww-logo.png` for the WW monogram.
+| Token | Value | Use |
+|-------|-------|-----|
+| Ink | `#0E0F11` | Text, mark on light |
+| Bone | `#F4F1EA` | Light backgrounds, mark on dark |
+| Red | `#B4232A` | Accent only |
+| Blue | `#537694` | Rare secondary, data viz |
+
+Discipline: roughly 80% neutrals, 15% red, 5% blue.
+
+Logo files live in `public/images/`. Use `current-heading-mark-{light,dark}.svg` for the mark and `current-heading-wordmark-{light,dark}.svg` for the wordmark version.
 
 ## Style notes
 
@@ -126,14 +130,14 @@ Pushes to `main` auto-deploy via GitHub Actions to GitHub Pages.
 
 - Build command: `npm run build`
 - Output directory: `dist`
-- Custom domain: `wyldwattage.com` (managed via `public/CNAME` and the GitHub Pages settings)
+- Custom domain: `currentheading.com` (managed via `public/CNAME` and the GitHub Pages settings)
 - Nightly rebuild at 11:00 UTC keeps videos and shop data fresh
 
 **One-time setup**
 
 1. Add the repo secrets and variables listed above.
 2. In **Settings → Pages**, set the source to **GitHub Actions**.
-3. Point the `wyldwattage.com` DNS at GitHub Pages (`A` records to GitHub IPs, plus a `CNAME` for `www`).
+3. Point the `currentheading.com` DNS at GitHub Pages (`A` records to GitHub IPs, plus a `CNAME` for `www`).
 4. Push to `main`. The workflow builds and deploys.
 
 ## Performance targets
@@ -147,11 +151,11 @@ Pushes to `main` auto-deploy via GitHub Actions to GitHub Pages.
 These are intentional. Don't "fix" them in cleanup passes:
 
 - Podcast platform links (`#`). Podcast not yet launched.
-- "Press and sponsorship" footer link. Not set up yet.
-- "Tip line. Bad sites." footer link. Not built yet.
+- OG card image (`/images/og-card.jpg`). To be designed.
+- Shop section commented out. Restore once merch is updated.
 
 Update these when the underlying thing exists.
 
 ## License
 
-© Wyld Media. All rights reserved.
+© Current Heading. All rights reserved.

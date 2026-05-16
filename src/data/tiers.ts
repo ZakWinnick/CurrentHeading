@@ -1,7 +1,7 @@
 // Patreon tiers. Source of truth for the membership section copy.
 // Update prices and perks here, not in the component.
 //
-// IMPORTANT: keep perks aligned with the live Patreon at members.wyldwattage.com.
+// IMPORTANT: keep perks aligned with the live Patreon at members.currentheading.com.
 // If the Patreon perks change, update this file in the same PR.
 
 export interface Tier {

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Current Heading avatar">
+  <title>Current Heading avatar light</title>
+  <defs>
+    <clipPath id="dialav">
+      <circle cx="200" cy="200" r="146"/>
+    </clipPath>
+  </defs>
+  <rect width="400" height="400" fill="#F4F1EA"/>
+  <circle cx="200" cy="200" r="156" fill="none" stroke="#0E0F11" stroke-width="14"/>
+  <line x1="200" y1="32" x2="200" y2="56" stroke="#0E0F11" stroke-width="7" stroke-linecap="round"/>
+  <line x1="368" y1="200" x2="344" y2="200" stroke="#0E0F11" stroke-width="6" stroke-linecap="round"/>
+  <line x1="200" y1="368" x2="200" y2="344" stroke="#0E0F11" stroke-width="6" stroke-linecap="round"/>
+  <line x1="32" y1="200" x2="56" y2="200" stroke="#0E0F11" stroke-width="6" stroke-linecap="round"/>
+  <g clip-path="url(#dialav)">
+    <path d="M 54 218 L 116 218 Q 150 218 150 158 Q 150 116 184 116 Q 218 116 218 158 Q 218 218 252 218 L 346 218" fill="none" stroke="#0E0F11" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="rotate(45 200 200)">
+    <polygon points="200,32 184,66 216,66" fill="#B4232A"/>
+  </g>
+</svg>

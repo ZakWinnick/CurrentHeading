@@ -13,15 +13,15 @@ const beholdId = import.meta.env.BEHOLD_FEED_ID;
       <span class="ww-bar"></span>
       <span class="ww-ig__handle">
         <Icon kind="ig" />
-        @wyldwattage
+        @currentheading
       </span>
     </div>
 
     <div class="ww-videos__head" style="align-items: flex-end;">
       <h2 class="ww-display" style="font-size: var(--ww-h1); margin: 0; color: var(--ww-paper);">
-        More from the road.
+        More from the road, the lot, and the air.
       </h2>
-      <a href="https://instagram.com/wyldwattage" target="_blank" rel="noopener" class="ww-ig__follow">
+      <a href="https://instagram.com/currentheading" target="_blank" rel="noopener" class="ww-ig__follow">
         Follow <Icon kind="arrow" />
       </a>
     </div>
@@ -31,7 +31,7 @@ const beholdId = import.meta.env.BEHOLD_FEED_ID;
         <behold-widget feed-id={beholdId}></behold-widget>
       ) : (
         <a
-          href="https://instagram.com/wyldwattage"
+          href="https://instagram.com/currentheading"
           target="_blank"
           rel="noopener"
           style="display: flex; flex-direction: column; gap: 12px; padding: clamp(24px, 3vw, 40px); border: 1px solid var(--ww-line); background: var(--ww-ink-1); color: var(--ww-paper); align-items: flex-start;"
@@ -41,7 +41,7 @@ const beholdId = import.meta.env.BEHOLD_FEED_ID;
             See the latest on Instagram.
           </span>
           <span style="display: inline-flex; align-items: center; gap: 8px; color: var(--ww-bone);">
-            instagram.com/wyldwattage <Icon kind="arrow" />
+            instagram.com/currentheading <Icon kind="arrow" />
           </span>
         </a>
       )}

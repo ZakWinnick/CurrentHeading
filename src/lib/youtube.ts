@@ -3,7 +3,7 @@
 //
 // Env vars (Cloudflare Pages dashboard, or local .env):
 //   YOUTUBE_API_KEY      Google Cloud API key with YouTube Data API v3 enabled
-//   YOUTUBE_CHANNEL_ID   The "UC..." channel ID for @wyldwattage
+//   YOUTUBE_CHANNEL_ID   The "UC..." channel ID for @currentheading
 //
 // Falls back to a small placeholder set if the env vars are missing or the
 // fetch fails. Site builds succeed in either case.
@@ -32,7 +32,7 @@ function placeholder(i: number, tag: string, title: string): VideoMeta {
   return {
     id: `placeholder-${i}`,
     title,
-    url: "https://youtube.com/@wyldwattage",
+    url: "https://youtube.com/@currentheading",
     thumbnail: "",
     duration: "",
     views: "",
