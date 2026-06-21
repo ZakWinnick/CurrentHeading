@@ -99,7 +99,7 @@ Build-time fetch of the latest products from the Fourthwall Storefront API using
 External link only, no API. Points to [members.currentheading.com](https://members.currentheading.com).
 
 ### Podcast
-Wyld Wramblings hasn't launched yet. Platform links (Apple Podcasts, Spotify, Overcast, RSS) are intentional placeholders. Update them when the podcast goes live.
+Ground Loop ("A Companion to Current Heading") is live at [podcast.currentheading.com](https://podcast.currentheading.com), hosted on Fireside. The latest episode embeds via the Fireside player (`player.fireside.fm/v3/cSzCML9e/latest`). Platform buttons (Apple Podcasts, Spotify, Overcast, RSS) all point to `podcast.currentheading.com` for now. Swap them for direct platform URLs when those are confirmed.
 
 ## Brand tokens
 
@@ -150,7 +150,6 @@ Pushes to `main` auto-deploy via GitHub Actions to GitHub Pages.
 
 These are intentional. Don't "fix" them in cleanup passes:
 
-- Podcast platform links (`#`). Podcast not yet launched.
 - OG card image (`/images/og-card.jpg`). To be designed.
 
 Update these when the underlying thing exists.
