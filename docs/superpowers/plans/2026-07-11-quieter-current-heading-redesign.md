@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Deliver a quieter, content-first Current Heading homepage with corrected public copy, faster imagery, and stronger mobile accessibility.
+**Goal:** Deliver a quieter Current Heading landing page with its original live destinations, corrected public copy, faster imagery, and stronger mobile accessibility.
 
-**Architecture:** Keep the existing Astro component model and build-time integrations, but replace the current section sequence with focused components and a new tokenized stylesheet. Add a small Node regression test that validates public copy, structure, assets, and brand-safe fallbacks against the built output.
+**Architecture:** Keep the existing Astro component model, landing-page destinations, and build-time integrations while updating the section presentation with a tokenized stylesheet. Add a Node regression test that validates public copy, structure, assets, live integration calls, and honest unavailable states.
 
 **Tech Stack:** Astro 6, TypeScript, CSS, Node test runner, Sharp through a one-time asset-generation command.
 
@@ -27,23 +27,23 @@
 - [ ] Add Node tests for the approved section order, required copy, forbidden copy, landmark and heading structure, mobile navigation control, Open Graph image, sitemap, and on-brand membership fallbacks.
 - [ ] Run `npm test` and confirm the tests fail against the current site for the expected missing structure and retired copy.
 
-### Task 2: Content-first component structure
+### Task 2: Landing-page component structure
 
 **Files:**
 - Modify: `src/pages/index.astro`
 - Modify: `src/components/Nav.astro`
 - Modify: `src/components/Hero.astro`
-- Create: `src/components/Lanes.astro`
+- Modify: `src/components/InstagramFeed.astro`
 - Modify: `src/components/LatestVideos.astro`
 - Modify: `src/components/About.astro`
 - Modify: `src/components/Podcast.astro`
 - Modify: `src/components/Patreon.astro`
 - Modify: `src/components/Shop.astro`
 - Modify: `src/components/Footer.astro`
-- Modify: `src/data/tiers.ts`
+- Delete: `src/data/tiers.ts`
 
-- [ ] Implement the approved semantic section sequence with real content and safe fallbacks.
-- [ ] Remove the retired homepage components from the page composition without deleting historical source files unnecessarily.
+- [x] Implement the approved semantic landing-page sequence with live content and honest unavailable states.
+- [x] Preserve YouTube, Instagram, Ground Loop, Patreon, and Fourthwall integrations without static or invented records.
 - [ ] Run `npm test` until content and structure checks pass.
 
 ### Task 3: Quiet visual system and responsive navigation
@@ -53,7 +53,7 @@
 - Modify: `src/layouts/Base.astro`
 
 - [ ] Replace pure-black and high-intensity tokens with tinted near-black neutrals and restrained orange.
-- [ ] Implement the hero, lane index, asymmetric work layout, About, Ground Loop, support links, mobile disclosure, focus styles, touch targets, and reduced-motion behavior.
+- [x] Implement the hero, responsive live-content grids, About, Ground Loop, Patreon, shop, mobile disclosure, focus styles, touch targets, and reduced-motion behavior.
 - [ ] Run `npm test` and `npm run build`.
 
 ### Task 4: Image and metadata performance

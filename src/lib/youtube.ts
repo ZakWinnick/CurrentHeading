@@ -5,8 +5,8 @@
 //   YOUTUBE_API_KEY      Google Cloud API key with YouTube Data API v3 enabled
 //   YOUTUBE_CHANNEL_ID   The "UC..." channel ID for @currentheading
 //
-// Falls back to a small placeholder set if the env vars are missing or the
-// fetch fails. Site builds succeed in either case.
+// Returns an empty list if live data is unavailable. The page then links
+// directly to the channel rather than displaying invented video records.
 
 export interface VideoMeta {
   id: string;
@@ -17,28 +17,6 @@ export interface VideoMeta {
   views: string;
   publishedAt: string;
   tag: string;
-}
-
-const FALLBACK: VideoMeta[] = [
-  placeholder(1, "Site Review", "Latest site review coming soon. Check the channel for the live drop."),
-  placeholder(2, "Network Take", "Latest network take coming soon. Check the channel for the live drop."),
-  placeholder(3, "Field Notes", "Latest field notes coming soon. Check the channel for the live drop."),
-  placeholder(4, "Site Review", "Latest site review coming soon. Check the channel for the live drop."),
-  placeholder(5, "Infrastructure", "Latest infrastructure post coming soon. Check the channel for the live drop."),
-  placeholder(6, "Field Notes", "Latest field notes coming soon. Check the channel for the live drop."),
-];
-
-function placeholder(i: number, tag: string, title: string): VideoMeta {
-  return {
-    id: `placeholder-${i}`,
-    title,
-    url: "https://youtube.com/@currentheading",
-    thumbnail: "",
-    duration: "",
-    views: "",
-    publishedAt: new Date().toISOString(),
-    tag,
-  };
 }
 
 function uploadsPlaylistId(channelId: string): string {
@@ -90,8 +68,8 @@ export async function fetchLatestVideos(limit = 6): Promise<VideoMeta[]> {
   const key = import.meta.env.YOUTUBE_API_KEY;
   const channelId = import.meta.env.YOUTUBE_CHANNEL_ID;
   if (!key || !channelId) {
-    console.warn("[youtube] Missing YOUTUBE_API_KEY or YOUTUBE_CHANNEL_ID. Using placeholders.");
-    return FALLBACK.slice(0, limit);
+    console.warn("[youtube] Missing YOUTUBE_API_KEY or YOUTUBE_CHANNEL_ID. Live videos unavailable.");
+    return [];
   }
 
   try {
@@ -105,7 +83,7 @@ export async function fetchLatestVideos(limit = 6): Promise<VideoMeta[]> {
     if (!playlistRes.ok) throw new Error(`playlistItems ${playlistRes.status}`);
     const playlistJson = await playlistRes.json() as { items: PlaylistItem[] };
     const items = playlistJson.items ?? [];
-    if (items.length === 0) return FALLBACK;
+    if (items.length === 0) return [];
 
     const ids = items.map((it) => it.contentDetails.videoId).join(",");
     const videosUrl =
@@ -134,7 +112,7 @@ export async function fetchLatestVideos(limit = 6): Promise<VideoMeta[]> {
       };
     });
   } catch (err) {
-    console.warn("[youtube] Fetch failed, using placeholders.", err);
-    return FALLBACK.slice(0, limit);
+    console.warn("[youtube] Fetch failed. Live videos unavailable.", err);
+    return [];
   }
 }

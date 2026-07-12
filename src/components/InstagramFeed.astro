@@ -1,28 +1,17 @@
 ---
 import Icon from "./icons.astro";
 
-// Behold widget. Create the feed at https://behold.so, then set
-// BEHOLD_FEED_ID in Cloudflare Pages env vars (and locally in .env).
-// If unset, a quiet CTA card renders instead so the section never breaks.
 const beholdId = import.meta.env.BEHOLD_FEED_ID;
 ---
-<section class="ww-section" id="instagram">
+<section class="ww-section ww-instagram" id="instagram" aria-labelledby="instagram-title">
   <div class="ww-container">
-    <div class="ww-eyebrow-row">
-      <span class="ww-eyebrow"><span class="ww-idx">03</span> &nbsp; On Instagram</span>
-      <span class="ww-bar"></span>
-      <span class="ww-ig__handle">
-        <Icon kind="ig" />
-        @currentheading
-      </span>
-    </div>
-
-    <div class="ww-videos__head" style="align-items: flex-end;">
-      <h2 class="ww-display" style="font-size: var(--ww-h1); margin: 0; color: var(--ww-paper);">
-        More from the road, the lot, and the air.
-      </h2>
-      <a href="https://instagram.com/currentheading" target="_blank" rel="noopener" class="ww-ig__follow">
-        Follow <Icon kind="arrow" />
+    <div class="ww-section-intro ww-section-intro--split">
+      <div>
+        <p class="ww-kicker">On Instagram</p>
+        <h2 id="instagram-title">More from the road, the lot, and the air.</h2>
+      </div>
+      <a href="https://instagram.com/currentheading" target="_blank" rel="noopener" class="ww-text-link">
+        Follow @currentheading <Icon kind="arrow" />
       </a>
     </div>
 
@@ -30,23 +19,14 @@ const beholdId = import.meta.env.BEHOLD_FEED_ID;
       {beholdId ? (
         <behold-widget feed-id={beholdId}></behold-widget>
       ) : (
-        <a
-          href="https://instagram.com/currentheading"
-          target="_blank"
-          rel="noopener"
-          style="display: flex; flex-direction: column; gap: 12px; padding: clamp(24px, 3vw, 40px); border: 1px solid var(--ww-line); background: var(--ww-ink-1); color: var(--ww-paper); align-items: flex-start;"
-        >
-          <span class="ww-eyebrow">Instagram feed</span>
-          <span class="ww-display" style="font-size: clamp(22px, 2.4vw, 36px); margin: 0;">
-            See the latest on Instagram.
-          </span>
-          <span style="display: inline-flex; align-items: center; gap: 8px; color: var(--ww-bone);">
-            instagram.com/currentheading <Icon kind="arrow" />
-          </span>
-        </a>
+        <div class="ww-empty-state">
+          <p>The latest photographs are available on Instagram.</p>
+          <a class="ww-text-link" href="https://instagram.com/currentheading" target="_blank" rel="noopener">
+            View Instagram <Icon kind="arrow" />
+          </a>
+        </div>
       )}
     </div>
-
   </div>
 </section>
 

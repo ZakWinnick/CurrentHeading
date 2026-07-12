@@ -6,8 +6,8 @@
 //                          or the OAuth refresh endpoint when it expires.
 //
 // On any failure (missing token, network, schema drift) returns null. The
-// Patreon component falls back to its static tier data and hides the
-// patron-count badge, so an expired token never breaks the build.
+// Patreon component links directly to the membership page when live data is
+// unavailable, so an expired token never breaks the build or invents details.
 
 export interface PatreonTier {
   id: string;
@@ -48,7 +48,7 @@ interface TierResource {
 export async function fetchPatreonStats(): Promise<PatreonStats | null> {
   const token = import.meta.env.PATREON_ACCESS_TOKEN;
   if (!token) {
-    console.warn("[patreon] Missing PATREON_ACCESS_TOKEN. Falling back to static tiers.");
+    console.warn("[patreon] Missing PATREON_ACCESS_TOKEN. Live membership data unavailable.");
     return null;
   }
 
@@ -63,7 +63,7 @@ export async function fetchPatreonStats(): Promise<PatreonStats | null> {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) {
-      console.warn(`[patreon] Fetch returned ${res.status}. Falling back to static tiers.`);
+      console.warn(`[patreon] Fetch returned ${res.status}. Live membership data unavailable.`);
       return null;
     }
     const data = (await res.json()) as {
@@ -95,7 +95,7 @@ export async function fetchPatreonStats(): Promise<PatreonStats | null> {
     if (tiers.length === 0) return null;
     return { patronCount, tiers };
   } catch (err) {
-    console.warn("[patreon] Fetch failed, falling back to static tiers.", err);
+    console.warn("[patreon] Fetch failed. Live membership data unavailable.", err);
     return null;
   }
 }

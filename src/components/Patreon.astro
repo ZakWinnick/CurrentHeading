@@ -1,21 +1,50 @@
 ---
 import Icon from "./icons.astro";
+import { fetchPatreonStats } from "../lib/patreon";
+
+const stats = await fetchPatreonStats();
+const tiers = stats?.tiers ?? [];
 ---
-<section class="ww-section ww-support" id="support" aria-labelledby="support-title">
-  <div class="ww-container ww-support__grid">
-    <div>
-      <p class="ww-kicker">Support the work</p>
-      <h2 id="support-title">Help make the next trip possible.</h2>
-      <p>
-        Members help cover travel, production time, and the gear behind Current
-        Heading. The Charging Hangar keeps the conversation going between releases.
-      </p>
+<section class="ww-section ww-patreon" id="patreon" aria-labelledby="patreon-title">
+  <div class="ww-container">
+    <div class="ww-section-intro ww-section-intro--split">
+      <div>
+        <p class="ww-kicker">The community</p>
+        <h2 id="patreon-title">Support Current Heading.</h2>
+      </div>
+      {stats && stats.patronCount > 0 && (
+        <p class="ww-patreon__count">{stats.patronCount.toLocaleString("en-US")} members</p>
+      )}
     </div>
-    <div class="ww-support__action">
-      <a class="ww-btn ww-btn--primary" href="https://members.currentheading.com" target="_blank" rel="noopener">
-        See membership options <Icon kind="arrow" />
-      </a>
-      <span>Day-trip · Cross-country · Long-haul</span>
-    </div>
+
+    <p class="ww-patreon__intro">
+      Members help fund the travel, production, and fieldwork behind Current Heading.
+      Join the community and choose the live membership that fits you.
+    </p>
+
+    {stats && stats.tiers.length > 0 ? (
+      <div class="ww-patreon__tiers">
+        {tiers.map((tier, index) => (
+          <article class="ww-tier">
+            <p class="ww-meta">Membership {String(index + 1).padStart(2, "0")}</p>
+            <h3>{tier.name}</h3>
+            <p class="ww-tier__price">${tier.price}<span>/month</span></p>
+            <div class="ww-tier__description">
+              {tier.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            </div>
+            <a href="https://members.currentheading.com" target="_blank" rel="noopener" class="ww-text-link">
+              Join on Patreon <Icon kind="arrow" />
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div class="ww-empty-state">
+        <p>Current membership details are available on Patreon.</p>
+        <a class="ww-text-link" href="https://members.currentheading.com" target="_blank" rel="noopener">
+          See membership options <Icon kind="arrow" />
+        </a>
+      </div>
+    )}
   </div>
 </section>

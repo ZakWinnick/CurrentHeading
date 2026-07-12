@@ -6,7 +6,7 @@ brand
 
 ## Users
 
-People arriving from a Current Heading video, photograph, podcast episode, or social post who want to understand Zak Winnick's work and find the next piece to watch, read, or hear. Most visits are short, mobile, and discovery-led.
+People arriving from a Current Heading video, photograph, podcast episode, or social post who want to understand Zak Winnick's work and find the channel, Instagram, podcast, membership, or shop. Most visits are short, mobile, and discovery-led.
 
 ## Product Purpose
 
@@ -26,8 +26,8 @@ Observant, direct, and grounded. Smart without smugness, technically precise whe
 
 ## Design Principles
 
-1. Show the work before explaining the person.
-2. Give each editorial lane equal standing without forcing crossover.
+1. Establish the brand and creator clearly before presenting its live destinations.
+2. Keep EV ownership, charging and infrastructure, and aviation equally valid without forcing crossover.
 3. Let one visual moment be bold, then create quiet intervals.
 4. Keep monetization available but secondary to discovery.
 5. Make claims only when current sources support them.

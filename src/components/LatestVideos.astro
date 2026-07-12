@@ -2,58 +2,50 @@
 import Icon from "./icons.astro";
 import { fetchLatestVideos } from "../lib/youtube";
 
-const videos = await fetchLatestVideos(3);
-const [featured, ...secondary] = videos;
+const videos = await fetchLatestVideos(6);
 const dateFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" });
 const formatDate = (iso: string) => {
   const date = new Date(iso);
   return Number.isNaN(date.getTime()) ? "" : dateFmt.format(date);
 };
 ---
-<section class="ww-section ww-work" id="work" aria-labelledby="work-title">
+<section class="ww-section ww-videos" id="videos" aria-labelledby="videos-title">
   <div class="ww-container">
     <div class="ww-section-intro ww-section-intro--split">
       <div>
-        <p class="ww-kicker">Latest work</p>
-        <h2 id="work-title">Start with what is new.</h2>
+        <p class="ww-kicker">The channel</p>
+        <h2 id="videos-title">Latest from the road and the runway.</h2>
       </div>
       <a class="ww-text-link" href="https://youtube.com/@currentheading" target="_blank" rel="noopener">
         All videos <Icon kind="arrow" />
       </a>
     </div>
 
-    <div class="ww-work__grid">
-      {featured && (
-        <a class="ww-work__featured" href={featured.url} target="_blank" rel="noopener">
-          <div class="ww-video__thumb">
-            {featured.thumbnail ? (
-              <img src={featured.thumbnail} alt="" loading="lazy" decoding="async" width="640" height="360" />
-            ) : (
-              <div class="ww-ph">Latest video</div>
-            )}
-            <div class="ww-video__play"><Icon kind="play" /></div>
-            {featured.duration && <div class="ww-video__duration">{featured.duration}</div>}
-          </div>
-          <div class="ww-work__featured-copy">
-            <p class="ww-meta">Featured · {formatDate(featured.publishedAt)}</p>
-            <h3>{featured.title}</h3>
-            <span class="ww-text-link">Watch now <Icon kind="arrow" /></span>
-          </div>
-        </a>
-      )}
-
-      <div class="ww-work__secondary">
-        {secondary.map((video, index) => (
-          <a href={video.url} target="_blank" rel="noopener">
-            <span class="ww-index">0{index + 2}</span>
-            <div>
-              <p class="ww-meta">{formatDate(video.publishedAt)}{video.duration && ` · ${video.duration}`}</p>
-              <h3>{video.title}</h3>
+    {videos.length > 0 ? (
+      <div class="ww-videos__grid">
+        {videos.map((video) => (
+          <a class="ww-video" href={video.url} target="_blank" rel="noopener">
+            <div class="ww-video__thumb">
+              {video.thumbnail && <img src={video.thumbnail} alt="" loading="lazy" decoding="async" width="640" height="360" />}
+              <div class="ww-video__play"><Icon kind="play" /></div>
+              {video.duration && <div class="ww-video__duration">{video.duration}</div>}
             </div>
-            <Icon kind="arrow" />
+            <p class="ww-meta">
+              {formatDate(video.publishedAt)}
+              {video.views && ` · ${video.views} views`}
+              {video.duration && ` · ${video.duration}`}
+            </p>
+            <h3>{video.title}</h3>
           </a>
         ))}
       </div>
-    </div>
+    ) : (
+      <div class="ww-empty-state">
+        <p>Latest videos are temporarily unavailable here.</p>
+        <a class="ww-text-link" href="https://youtube.com/@currentheading" target="_blank" rel="noopener">
+          View the channel on YouTube <Icon kind="arrow" />
+        </a>
+      </div>
+    )}
   </div>
 </section>

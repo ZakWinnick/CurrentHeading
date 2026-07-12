@@ -25,18 +25,19 @@ A photographer's field notebook laid over a technical site plan. The site is a r
 
 - Maximum content width: 1280px.
 - Mobile-first spacing with clear alternation between broad image moments and quieter text sections.
-- Use asymmetry for featured work, not repeated equal cards.
-- The homepage sequence is Hero, Editorial Lanes, Latest Work, About, Ground Loop, Support and Shop, Footer.
+- Use simple responsive grids for live media, memberships, and products.
+- The homepage sequence is Hero, About, Latest Videos, Instagram, Ground Loop, Patreon, Shop, Footer.
 
 ## Components
 
-- Navigation: compact wordmark, Work, About, Ground Loop, and a quiet Support link. Mobile uses a native disclosure.
+- Navigation: compact wordmark and direct anchors to Channel, About, Ground Loop, Patreon, and Shop. Mobile uses a native disclosure.
 - Hero: one real photograph, one headline, one supporting sentence, one primary action, one secondary action.
-- Editorial lanes: a three-item text index separated by rules.
-- Work: one featured video and up to two secondary entries.
 - About: short creator statement, portrait, and method-focused copy without a credential ledger.
-- Ground Loop: compact cover, description, player, and one destination link.
-- Support and shop: low-pressure paired links, no full pricing grid on the homepage.
+- Latest videos: six live YouTube entries with an honest channel link if the API is unavailable.
+- Instagram: the live Behold feed with an honest profile link if unavailable.
+- Ground Loop: compact cover, description, live player, and destination link.
+- Patreon: live member count and published tiers, with no static or invented membership data.
+- Shop: all products returned by the live Fourthwall integration, with a shop link if unavailable.
 
 ## Motion
 

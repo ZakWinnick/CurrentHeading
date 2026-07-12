@@ -17,7 +17,7 @@ const products = await fetchShopProducts();
 
     <div class="ww-shop__products">
       {products.length > 0 ? (
-        products.slice(0, 2).map((product) => (
+        products.map((product) => (
           <a class="ww-shop__product" href={product.url} target="_blank" rel="noopener">
             {product.image && <img src={product.image} alt="" loading="lazy" decoding="async" />}
             <span><strong>{product.name}</strong><small>{product.price}</small></span>

@@ -4,9 +4,9 @@ import { test } from "node:test";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("homepage follows the approved content-first section order", async () => {
+test("homepage preserves the brand landing-page component order", async () => {
   const page = await read("src/pages/index.astro");
-  const expected = ["<Hero", "<Lanes", "<LatestVideos", "<About", "<Podcast", "<Patreon", "<Shop", "<Footer"];
+  const expected = ["<Hero", "<About", "<LatestVideos", "<InstagramFeed", "<Podcast", "<Patreon", "<Shop", "<Footer"];
   let previous = -1;
 
   for (const marker of expected) {
@@ -15,7 +15,7 @@ test("homepage follows the approved content-first section order", async () => {
     previous = index;
   }
 
-  assert.doesNotMatch(page, /<Marquee|<InstagramFeed|<BigWord/);
+  assert.doesNotMatch(page, /<Lanes|<Marquee|<BigWord/);
   assert.match(page, /<main\b/);
 });
 
@@ -25,7 +25,7 @@ test("public source contains no retired or restricted Current Heading phrases", 
     "src/components/Hero.astro",
     "src/components/About.astro",
     "src/components/Footer.astro",
-    "src/data/tiers.ts",
+    "src/components/Patreon.astro",
     "src/lib/youtube.ts",
   ];
   const source = (await Promise.all(paths.map(read))).join("\n");
@@ -44,21 +44,33 @@ test("public source contains no retired or restricted Current Heading phrases", 
   }
 });
 
-test("fallback membership names match Current Heading decisions", async () => {
-  const tiers = await read("src/data/tiers.ts");
-  assert.match(tiers, /name: "Day-trip"/);
-  assert.match(tiers, /name: "Cross-country"/);
-  assert.match(tiers, /name: "Long-haul"/);
-  assert.match(tiers, /Charging Hangar/);
+test("landing-page sections use live integrations without static membership data", async () => {
+  const youtube = await read("src/components/LatestVideos.astro");
+  const instagram = await read("src/components/InstagramFeed.astro");
+  const patreon = await read("src/components/Patreon.astro");
+  const shop = await read("src/components/Shop.astro");
+
+  assert.match(youtube, /fetchLatestVideos\(6\)/);
+  assert.match(instagram, /BEHOLD_FEED_ID/);
+  assert.match(instagram, /behold-widget/);
+  assert.match(patreon, /fetchPatreonStats\(\)/);
+  assert.match(patreon, /stats\?\.tiers|stats && stats\.tiers/);
+  assert.doesNotMatch(patreon, /\bTIERS\b/);
+  await assert.rejects(access(new URL("../src/data/tiers.ts", import.meta.url)));
+  assert.match(shop, /fetchShopProducts\(\)/);
+  assert.doesNotMatch(shop, /products\.slice/);
 });
 
 test("navigation retains section access on mobile", async () => {
   const nav = await read("src/components/Nav.astro");
+  const hero = await read("src/components/Hero.astro");
   assert.match(nav, /<details[^>]*class="ww-nav__menu"/);
   assert.match(nav, /<summary[^>]*>\s*Menu\s*<\/summary>/s);
-  for (const href of ["#work", "#about", "#podcast", "#support"]) {
+  for (const href of ["#videos", "#about", "#podcast", "#patreon", "#shop"]) {
     assert.match(nav, new RegExp(`href=["']${href}["']`));
   }
+  assert.match(hero, /href=["']#videos["']/);
+  assert.doesNotMatch(hero, /href=["']#work["']/);
 });
 
 test("hero uses responsive priority imagery instead of a CSS background", async () => {
@@ -91,16 +103,19 @@ test("responsive hero assets stay within the transfer budget", async () => {
   }
 });
 
-test("YouTube fallback respects the requested homepage limit", async () => {
+test("YouTube failures return an honest empty state instead of fake videos", async () => {
   const youtube = await read("src/lib/youtube.ts");
-  const limitedFallbacks = youtube.match(/return FALLBACK\.slice\(0, limit\);/g) ?? [];
-  assert.equal(limitedFallbacks.length, 2, "missing-credential and fetch-error paths must both honor limit");
+  assert.doesNotMatch(youtube, /const FALLBACK|function placeholder|coming soon/i);
+  const emptyReturns = youtube.match(/return \[\];/g) ?? [];
+  assert.ok(emptyReturns.length >= 3, "missing credentials, empty API results, and fetch errors must return []");
 });
 
-test("homepage avoids eager podcast audio and the oversized legacy favicon", async () => {
+test("homepage keeps the live Ground Loop player and avoids the oversized legacy favicon", async () => {
   const podcast = await read("src/components/Podcast.astro");
   const base = await read("src/layouts/Base.astro");
-  assert.doesNotMatch(podcast, /player\.fireside\.fm|<iframe/);
+  assert.match(podcast, /player\.fireside\.fm/);
+  assert.match(podcast, /player\.fireside\.fm\/v3\/cSzCML9e\/latest\?theme=dark/);
+  assert.match(podcast, /<iframe/);
   assert.doesNotMatch(base, /favicon\.ico/);
 });
 
