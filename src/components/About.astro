@@ -1,64 +1,44 @@
----
----
-<section class="ww-section" id="about">
-  <div class="ww-container ww-grid12">
-    <div class="ww-eyebrow-row" style="grid-column: 1 / -1;">
-      <span class="ww-eyebrow"><span class="ww-idx">01</span> &nbsp; About</span>
-      <span class="ww-bar"></span>
-      <span class="ww-eyebrow">Who is doing this, and why.</span>
-    </div>
-
-    <p class="ww-about__lede">
-      Zak Winnick builds charging infrastructure for a living, and watches
-      the wrong sites <em>quietly burn a million dollars apiece.</em>
-      He's also been charging EVs for a decade across most of the major
-      networks, and just started taking flight lessons. The channel is what
-      happens when one person can't stop noticing things and decides to
-      point a camera at them.
-    </p>
-
-    <aside class="ww-about__sidebar">
-      <dl>
-        <div>
-          <dt>Day Job</dt>
-          <dd>Founder and CEO, <em>Rangeway Energy</em></dd>
-        </div>
-        <div>
-          <dt>Community</dt>
-          <dd>
-            Community Director, <a href="https://bayarearivianclub.com" target="_blank" rel="noopener">Bay Area Rivian Club</a>
-            <br />
-            Executive Director - <a href="https://norcalevs.org" target="_blank" rel="noopener">NorCal EVs</a>
-          </dd>
-        </div>
-        <div>
-          <dt>Podcast</dt>
-          <dd>Host - <a href="#podcast">Ground Loop</a></dd>
-        </div>
-        <div>
-          <dt>Lives in</dt>
-          <dd>Napa, CA</dd>
-        </div>
-      </dl>
-    </aside>
-
-    <div class="ww-about__portrait">
-      <img
-        src="/images/zak-portrait.jpg"
-        alt="Zak Winnick at Vasquez Rocks, R1T behind"
-        loading="lazy"
-        decoding="async"
-        width="1600"
-        height="1200"
-      />
-    </div>
-
-    <div class="ww-about__quote">
+<section class="ww-section ww-about" id="about" aria-labelledby="about-title">
+  <div class="ww-container ww-about__grid">
+    <div class="ww-about__copy">
+      <p class="ww-kicker">About Zak</p>
+      <h2 id="about-title">The camera usually notices first.</h2>
+      <p class="ww-about__lede">
+        Current Heading is where Zak Winnick points a camera at the systems,
+        machines, and places he keeps noticing.
+      </p>
       <p>
-        Most charging YouTubers test plugs. I test the parking lot, the
-        lighting, the sign placement, the host's attitude. The plug is the
-        easy part.
+        That includes real-world EV ownership, the design of charging sites and
+        networks, and aviation as it appears through the work. The subjects stay
+        distinct. The same curiosity connects them.
       </p>
     </div>
+
+    <div class="ww-about__portrait">
+      <picture>
+        <source
+          type="image/avif"
+          srcset="/images/zak-portrait-640.avif 640w, /images/zak-portrait-960.avif 960w"
+          sizes="(min-width: 760px) 52vw, 100vw"
+        />
+        <source
+          type="image/webp"
+          srcset="/images/zak-portrait-640.webp 640w, /images/zak-portrait-960.webp 960w"
+          sizes="(min-width: 760px) 52vw, 100vw"
+        />
+        <img
+          src="/images/zak-portrait-960.webp"
+          alt="Zak Winnick standing near his R1T at Vasquez Rocks"
+          loading="lazy"
+          decoding="async"
+          width="960"
+          height="720"
+        />
+      </picture>
+    </div>
+
+    <blockquote class="ww-about__quote">
+      <p>The plug is only part of the stop. The parking lot, lighting, signs, amenities, and everything around the charge matter too.</p>
+    </blockquote>
   </div>
 </section>

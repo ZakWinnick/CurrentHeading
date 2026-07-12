@@ -6,37 +6,37 @@ const year = new Date().getFullYear();
   <div class="ww-footer__inner">
     <div class="ww-footer__brand">
       <img src="/images/current-heading-avatar-dark.svg" alt="Current Heading" width="48" height="48" />
-      <div class="ww-nav__wordmark" style="font-size: 18px;">Current Heading</div>
-      <p>
-        EVs, charging, and the view from the cockpit. Made between Napa,
-        the next bad plug, and whichever airport will have me.
-      </p>
+      <p class="ww-nav__wordmark">Current Heading</p>
+      <p>Films, photographs, and field notes across EV ownership, charging infrastructure, and aviation.</p>
     </div>
-    <div>
-      <h4>Channel</h4>
+
+    <nav aria-label="Current Heading channels">
+      <p class="ww-footer__heading">Channels</p>
       <ul>
         <li><a href="https://youtube.com/@currentheading" target="_blank" rel="noopener"><Icon kind="yt" />YouTube</a></li>
-        <li><a href="#podcast"><Icon kind="mic" />Ground Loop</a></li>
+        <li><a href="https://podcast.currentheading.com" target="_blank" rel="noopener"><Icon kind="mic" />Ground Loop</a></li>
       </ul>
-    </div>
-    <div>
-      <h4>Around</h4>
+    </nav>
+
+    <nav aria-label="Current Heading social accounts">
+      <p class="ww-footer__heading">Around</p>
       <ul>
         <li><a href="https://instagram.com/currentheading" target="_blank" rel="noopener"><Icon kind="ig" />@currentheading</a></li>
         <li><a href="https://x.com/zakwinnick" target="_blank" rel="noopener"><Icon kind="x" />@ZakWinnick</a></li>
-        <li><a href="https://members.currentheading.com" target="_blank" rel="noopener"><Icon kind="patreon" />Patreon</a></li>
       </ul>
-    </div>
+    </nav>
+
     <div>
-      <h4>Get in touch</h4>
+      <p class="ww-footer__heading">Get in touch</p>
       <ul>
         <li><a href="mailto:hello@currentheading.com">hello@currentheading.com</a></li>
         <li><a href="mailto:media@currentheading.com">Press and sponsorship</a></li>
       </ul>
     </div>
   </div>
+
   <div class="ww-footer__bar">
     <span>© {year} Current Heading</span>
-    <span>No network, manufacturer, or operator has paid for a review on this channel. None ever will.</span>
+    <a href="#top">Back to top</a>
   </div>
 </footer>

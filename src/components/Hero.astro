@@ -2,30 +2,41 @@
 import Icon from "./icons.astro";
 ---
 <header class="ww-hero" id="top">
-  <div class="ww-hero__bg" aria-hidden="true"></div>
+  <picture class="ww-hero__media">
+    <source
+      type="image/avif"
+      srcset="/images/hero-r1t-640.avif 640w, /images/hero-r1t-960.avif 960w, /images/hero-r1t-1440.avif 1440w"
+      sizes="100vw"
+    />
+    <source
+      type="image/webp"
+      srcset="/images/hero-r1t-640.webp 640w, /images/hero-r1t-960.webp 960w, /images/hero-r1t-1440.webp 1440w"
+      sizes="100vw"
+    />
+    <img
+      src="/images/hero-r1t-1440.webp"
+      alt="A red Rivian R1T rounding a wet forest road"
+      width="1440"
+      height="960"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </picture>
   <div class="ww-hero__scrim" aria-hidden="true"></div>
-  <div class="ww-hero__grain" aria-hidden="true"></div>
 
   <div class="ww-hero__content">
     <h1 class="ww-hero__headline">
-      EVs, charging,<br />
-      and the <em>view from<br />
-      the cockpit.</em>
+      EV ownership,<br />
+      charging infrastructure,<br />
+      and aviation.
     </h1>
-
-    <p class="ww-hero__sub">
-      Ownership reality, DC fast charging reviewed from inside the industry,
-      and dispatches from the air. One channel, three lanes, no sponsorship strings.
-    </p>
-
+    <p class="ww-hero__sub">Films, photographs, and field notes by Zak Winnick.</p>
     <div class="ww-hero__ctas">
-      <a class="ww-btn ww-btn--primary" href="https://youtube.com/@currentheading" target="_blank" rel="noopener">
-        Watch on YouTube
-        <Icon kind="arrow" />
+      <a class="ww-btn ww-btn--primary" href="#work">
+        See the latest work <Icon kind="arrow" />
       </a>
-      <a class="ww-btn ww-btn--ghost" href="https://members.currentheading.com" target="_blank" rel="noopener">
-        Become a Patron
-        <Icon kind="arrow" />
+      <a class="ww-btn ww-btn--ghost" href="https://youtube.com/@currentheading" target="_blank" rel="noopener">
+        Watch on YouTube <Icon kind="arrow" />
       </a>
     </div>
   </div>

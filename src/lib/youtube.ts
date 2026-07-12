@@ -24,8 +24,8 @@ const FALLBACK: VideoMeta[] = [
   placeholder(2, "Network Take", "Latest network take coming soon. Check the channel for the live drop."),
   placeholder(3, "Field Notes", "Latest field notes coming soon. Check the channel for the live drop."),
   placeholder(4, "Site Review", "Latest site review coming soon. Check the channel for the live drop."),
-  placeholder(5, "Operator", "Latest operator post coming soon. Check the channel for the live drop."),
-  placeholder(6, "Rant", "Latest rant coming soon. Check the channel for the live drop."),
+  placeholder(5, "Infrastructure", "Latest infrastructure post coming soon. Check the channel for the live drop."),
+  placeholder(6, "Field Notes", "Latest field notes coming soon. Check the channel for the live drop."),
 ];
 
 function placeholder(i: number, tag: string, title: string): VideoMeta {
@@ -72,7 +72,7 @@ function tagFor(title: string): string {
   if (t.includes("rant") || t.includes("opinion")) return "Rant";
   if (t.includes("network") || t.includes("ea ") || t.includes("tesla")) return "Network Take";
   if (t.includes("road") || t.includes("trip")) return "Road Trip";
-  if (t.includes("operator") || t.includes("rangeway")) return "Operator";
+  if (t.includes("infrastructure") || t.includes("rangeway")) return "Infrastructure";
   return "Field Notes";
 }
 
@@ -91,7 +91,7 @@ export async function fetchLatestVideos(limit = 6): Promise<VideoMeta[]> {
   const channelId = import.meta.env.YOUTUBE_CHANNEL_ID;
   if (!key || !channelId) {
     console.warn("[youtube] Missing YOUTUBE_API_KEY or YOUTUBE_CHANNEL_ID. Using placeholders.");
-    return FALLBACK;
+    return FALLBACK.slice(0, limit);
   }
 
   try {
@@ -135,6 +135,6 @@ export async function fetchLatestVideos(limit = 6): Promise<VideoMeta[]> {
     });
   } catch (err) {
     console.warn("[youtube] Fetch failed, using placeholders.", err);
-    return FALLBACK;
+    return FALLBACK.slice(0, limit);
   }
 }

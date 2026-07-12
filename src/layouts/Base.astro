@@ -6,7 +6,7 @@ interface Props {
 
 const {
   title = "Current Heading. EVs, charging, and aviation.",
-  description = "EV ownership, DC fast charging, and aviation from Zak Winnick. Operator-lens reviews, real-world ownership notes, and dispatches from the cockpit.",
+  description = "Films, photographs, and field notes from Zak Winnick across EV ownership, charging infrastructure, and aviation.",
 } = Astro.props;
 
 const canonical = "https://currentheading.com/";
@@ -16,7 +16,7 @@ const canonical = "https://currentheading.com/";
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0E0F11" />
+  <meta name="theme-color" content="#11100f" />
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
@@ -25,11 +25,14 @@ const canonical = "https://currentheading.com/";
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content="https://currentheading.com/" />
-  <meta property="og:image" content="/images/og-card.jpg" />
+  <meta property="og:image" content="https://currentheading.com/images/og-card.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Current Heading. EV ownership, charging infrastructure, and aviation." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@currentheading" />
+  <meta name="twitter:image" content="https://currentheading.com/images/og-card.jpg" />
 
-  <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -39,23 +42,12 @@ const canonical = "https://currentheading.com/";
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"
   />
 
   <script src="https://tinylytics.app/embed/vQ5FDyywb7SypJ7Wqr5-.js" defer></script>
 </head>
 <body>
   <slot />
-
-  <div class="ww-texture-layer is-scan" aria-hidden="true"></div>
-
-  <script>
-    const nav = document.querySelector(".ww-nav");
-    if (nav) {
-      const setStuck = () => nav.classList.toggle("is-stuck", window.scrollY > 24);
-      setStuck();
-      window.addEventListener("scroll", setStuck, { passive: true });
-    }
-  </script>
 </body>
 </html>

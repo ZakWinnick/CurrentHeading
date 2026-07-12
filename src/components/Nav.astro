@@ -1,20 +1,24 @@
----
-import Icon from "./icons.astro";
----
 <nav class="ww-nav">
   <a href="#top" class="ww-nav__brand" aria-label="Current Heading home">
     <img src="/images/current-heading-avatar-dark.svg" alt="" width="36" height="36" />
     <span class="ww-nav__wordmark">Current Heading</span>
   </a>
-  <div class="ww-nav__links">
+
+  <div class="ww-nav__links" aria-label="Primary navigation">
+    <a href="#work">Work</a>
     <a href="#about">About</a>
-    <a href="#videos">Channel</a>
-    <a href="#podcast">Podcast</a>
-    <a href="#patreon">Patreon</a>
-    <a href="#shop">Shop</a>
+    <a href="#podcast">Ground Loop</a>
   </div>
-  <a class="ww-nav__cta" href="https://members.currentheading.com" target="_blank" rel="noopener">
-    Become a Patron
-    <Icon kind="arrow" />
-  </a>
+
+  <a class="ww-nav__cta" href="#support">Support</a>
+
+  <details class="ww-nav__menu">
+    <summary>Menu</summary>
+    <div class="ww-nav__menu-panel">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#podcast">Ground Loop</a>
+      <a href="#support">Support</a>
+    </div>
+  </details>
 </nav>

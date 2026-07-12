@@ -4,49 +4,30 @@ import { fetchShopProducts } from "../lib/fourthwall";
 
 const products = await fetchShopProducts();
 ---
-<section class="ww-section" id="shop">
-  <div class="ww-container">
-    <div class="ww-eyebrow-row">
-      <span class="ww-eyebrow"><span class="ww-idx">06</span> &nbsp; The Shop</span>
-      <span class="ww-bar"></span>
-      <span class="ww-eyebrow">shop.currentheading.com</span>
+<section class="ww-section ww-shop-section" id="shop" aria-labelledby="shop-title">
+  <div class="ww-container ww-shop__grid">
+    <div class="ww-shop__copy">
+      <p class="ww-kicker">The shop</p>
+      <h2 id="shop-title">A few things worth carrying.</h2>
+      <p>Small runs of Current Heading shirts, hats, bottles, and stickers.</p>
+      <a class="ww-text-link" href="https://shop.currentheading.com" target="_blank" rel="noopener">
+        Visit the shop <Icon kind="arrow" />
+      </a>
     </div>
-    <div class="ww-shop">
-      <div class="ww-shop__copy">
-        <h2 class="ww-display" style="font-size: var(--ww-h1); color: var(--ww-paper); margin: 0;">
-          Tees, hats, stickers,<br />and more.
-        </h2>
-        <p>
-          Small drops, no bullshit. If you wear one at a charger or on
-          the ramp, send a photo to the Hangar.
-        </p>
-        <a class="ww-btn ww-btn--primary" href="https://shop.currentheading.com" target="_blank" rel="noopener">
-          Visit the shop <Icon kind="arrow" />
-        </a>
-      </div>
-      <div class="ww-shop__products">
-        {products.length > 0 ? (
-          products.map((p, i) => (
-            <a class="ww-shop__product" href={p.url} target="_blank" rel="noopener">
-              {p.image && <img class="pimg" src={p.image} alt="" loading="lazy" decoding="async" />}
-              <span class="pscrim"></span>
-              <span class="pname">{p.name}</span>
-              <span class="pprice">{p.price}</span>
-              <span class="pmark">{String(i + 1).padStart(2, "0")}</span>
-            </a>
-          ))
-        ) : (
-          <a class="ww-shop__fallback" href="https://shop.currentheading.com" target="_blank" rel="noopener">
-            <span class="ww-eyebrow">Latest drops</span>
-            <span class="ww-display" style="font-size: clamp(22px, 2.4vw, 36px); color: var(--ww-paper); margin: 0;">
-              Browse the shop
-            </span>
-            <span style="display: inline-flex; align-items: center; gap: 8px; color: var(--ww-bone);">
-              shop.currentheading.com <Icon kind="arrow" />
-            </span>
+
+    <div class="ww-shop__products">
+      {products.length > 0 ? (
+        products.slice(0, 2).map((product) => (
+          <a class="ww-shop__product" href={product.url} target="_blank" rel="noopener">
+            {product.image && <img src={product.image} alt="" loading="lazy" decoding="async" />}
+            <span><strong>{product.name}</strong><small>{product.price}</small></span>
           </a>
-        )}
-      </div>
+        ))
+      ) : (
+        <a class="ww-shop__fallback ww-text-link" href="https://shop.currentheading.com" target="_blank" rel="noopener">
+          Browse the latest pieces <Icon kind="arrow" />
+        </a>
+      )}
     </div>
   </div>
 </section>

@@ -2,57 +2,58 @@
 import Icon from "./icons.astro";
 import { fetchLatestVideos } from "../lib/youtube";
 
-const videos = await fetchLatestVideos(6);
-
-const dateFmt = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-});
+const videos = await fetchLatestVideos(3);
+const [featured, ...secondary] = videos;
+const dateFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" });
 const formatDate = (iso: string) => {
-  const d = new Date(iso);
-  return Number.isNaN(d.getTime()) ? "" : dateFmt.format(d);
+  const date = new Date(iso);
+  return Number.isNaN(date.getTime()) ? "" : dateFmt.format(date);
 };
 ---
-<section class="ww-section" id="videos">
+<section class="ww-section ww-work" id="work" aria-labelledby="work-title">
   <div class="ww-container">
-    <div class="ww-eyebrow-row">
-      <span class="ww-eyebrow"><span class="ww-idx">02</span> &nbsp; The Channel</span>
-      <span class="ww-bar"></span>
-      <span class="ww-eyebrow">youtube.com/@currentheading</span>
-    </div>
-    <div class="ww-videos__head">
-      <h2 class="ww-display" style="font-size: var(--ww-h1); margin: 0; color: var(--ww-paper);">
-        Latest from the road and the runway.
-      </h2>
-      <a href="https://youtube.com/@currentheading" target="_blank" rel="noopener">
-        All videos on YouTube <Icon kind="arrow" />
+    <div class="ww-section-intro ww-section-intro--split">
+      <div>
+        <p class="ww-kicker">Latest work</p>
+        <h2 id="work-title">Start with what is new.</h2>
+      </div>
+      <a class="ww-text-link" href="https://youtube.com/@currentheading" target="_blank" rel="noopener">
+        All videos <Icon kind="arrow" />
       </a>
     </div>
-    <div class="ww-videos__row">
-      {videos.map((v, i) => (
-        <a class="ww-video" href={v.url} target="_blank" rel="noopener">
+
+    <div class="ww-work__grid">
+      {featured && (
+        <a class="ww-work__featured" href={featured.url} target="_blank" rel="noopener">
           <div class="ww-video__thumb">
-            {v.thumbnail ? (
-              <img src={v.thumbnail} alt="" loading="lazy" decoding="async" width="640" height="360" />
+            {featured.thumbnail ? (
+              <img src={featured.thumbnail} alt="" loading="lazy" decoding="async" width="640" height="360" />
             ) : (
-              <div class="ww-ph">
-                <div class="ww-ph__label">
-                  <span class="num">VID/{String(i + 1).padStart(2, "0")}</span>
-                  <span>{v.tag.toLowerCase()} thumb</span>
-                </div>
-              </div>
+              <div class="ww-ph">Latest video</div>
             )}
             <div class="ww-video__play"><Icon kind="play" /></div>
-            {v.duration && <div class="ww-video__duration">{v.duration}</div>}
+            {featured.duration && <div class="ww-video__duration">{featured.duration}</div>}
           </div>
-          <div class="ww-video__meta">
-            <span class="tag">{formatDate(v.publishedAt)}</span>
-            {v.views && <><span>·</span><span>{v.views} views</span></>}
+          <div class="ww-work__featured-copy">
+            <p class="ww-meta">Featured · {formatDate(featured.publishedAt)}</p>
+            <h3>{featured.title}</h3>
+            <span class="ww-text-link">Watch now <Icon kind="arrow" /></span>
           </div>
-          <h3 class="ww-video__title">{v.title}</h3>
         </a>
-      ))}
+      )}
+
+      <div class="ww-work__secondary">
+        {secondary.map((video, index) => (
+          <a href={video.url} target="_blank" rel="noopener">
+            <span class="ww-index">0{index + 2}</span>
+            <div>
+              <p class="ww-meta">{formatDate(video.publishedAt)}{video.duration && ` · ${video.duration}`}</p>
+              <h3>{video.title}</h3>
+            </div>
+            <Icon kind="arrow" />
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 </section>

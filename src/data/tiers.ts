@@ -16,7 +16,7 @@ export interface Tier {
 export const TIERS: Tier[] = [
   {
     id: "T-01",
-    name: "Be Excellent!",
+    name: "Day-trip",
     price: "10",
     perks: [
       "Access to The Charging Hangar Discord",
@@ -26,22 +26,22 @@ export const TIERS: Tier[] = [
   },
   {
     id: "T-02",
-    name: "Station!",
+    name: "Cross-country",
     price: "20",
     featured: true,
     perks: [
-      "Everything in Be Excellent!",
-      "Monthly live Q&A in the Booth",
-      "Site Notes, the operator-grade behind-the-scenes",
+      "Everything in Day-trip",
+      "Monthly live Q&A in The Charging Hangar",
+      "Behind-the-scenes production notes",
       "First crack at road-trip route votes",
     ],
   },
   {
     id: "T-03",
-    name: "Most Triumphant!",
+    name: "Long-haul",
     price: "40",
     perks: [
-      "Everything in Station!",
+      "Everything in Cross-country",
       "Quarterly Zoom hangout, max 12 patrons",
       "Name in the channel credits, forever",
       "Vote on the next op-ed teardown",

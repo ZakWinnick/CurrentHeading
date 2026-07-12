@@ -1,55 +1,42 @@
 ---
 import Icon from "./icons.astro";
 ---
-<section class="ww-section" id="podcast">
-  <div class="ww-container">
-    <div class="ww-eyebrow-row">
-      <span class="ww-eyebrow"><span class="ww-idx">04</span> &nbsp; The Podcast</span>
-      <span class="ww-bar"></span>
-      <span class="ww-eyebrow">Ground Loop</span>
-    </div>
-    <div class="ww-podcast">
-      <div class="ww-podcast__art">
+<section class="ww-section ww-podcast-section" id="podcast" aria-labelledby="podcast-title">
+  <div class="ww-container ww-podcast">
+    <div class="ww-podcast__art">
+      <picture>
+        <source
+          type="image/avif"
+          srcset="/images/ground-loop-cover-480.avif 480w, /images/ground-loop-cover-800.avif 800w"
+          sizes="(min-width: 760px) 35vw, 100vw"
+        />
+        <source
+          type="image/webp"
+          srcset="/images/ground-loop-cover-480.webp 480w, /images/ground-loop-cover-800.webp 800w"
+          sizes="(min-width: 760px) 35vw, 100vw"
+        />
         <img
-          src="/images/ground-loop-cover.webp"
+          src="/images/ground-loop-cover-800.webp"
           alt="Ground Loop podcast cover"
-          width="1200"
-          height="1200"
+          width="800"
+          height="800"
           loading="lazy"
           decoding="async"
         />
-      </div>
+      </picture>
+    </div>
 
-      <div class="ww-podcast__copy">
-        <span class="ww-eyebrow" style="display: block; margin-bottom: 16px;">A companion to Current Heading</span>
-        <h2 class="ww-display" style="font-size: var(--ww-h1); margin: 0; color: var(--ww-paper);">
-          The long way<br />round.
-        </h2>
-        <p style="margin-top: 24px;">
-          The audio side of Current Heading, for the conversations that won't fit
-          in a 12-minute video. Longer takes on EVs, charging, and aviation,
-          the occasional honest rant about infrastructure, and guests worth
-          giving an hour to.
-        </p>
-
-        <ul class="ww-podcast__platforms">
-          <li><a href="https://podcast.currentheading.com" target="_blank" rel="noopener"><Icon kind="apple" /> Apple Podcasts</a></li>
-          <li><a href="https://podcast.currentheading.com" target="_blank" rel="noopener"><Icon kind="spotify" /> Spotify</a></li>
-          <li><a href="https://podcast.currentheading.com" target="_blank" rel="noopener"><Icon kind="overcast" /> Overcast</a></li>
-          <li><a href="https://podcast.currentheading.com" target="_blank" rel="noopener"><Icon kind="rss" /> RSS</a></li>
-        </ul>
-
-        <iframe
-          src="https://player.fireside.fm/v3/cSzCML9e/latest?theme=dark"
-          width="100%"
-          height="200"
-          frameborder="0"
-          scrolling="no"
-          loading="lazy"
-          title="Ground Loop latest episode"
-          style="margin-top: 24px; border: 0;"
-        ></iframe>
-      </div>
+    <div class="ww-podcast__copy">
+      <p class="ww-kicker">Ground Loop podcast</p>
+      <h2 id="podcast-title">The conversations that need more room.</h2>
+      <p>
+        The audio side of Current Heading, for the conversations that won't fit
+        in a video. Longer takes on EVs, charging, aviation, and guests worth
+        giving an hour to.
+      </p>
+      <a class="ww-text-link" href="https://podcast.currentheading.com" target="_blank" rel="noopener">
+        Listen to Ground Loop <Icon kind="arrow" />
+      </a>
     </div>
   </div>
 </section>

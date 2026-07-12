@@ -75,10 +75,10 @@ For local development, copy `.env.example` to `.env` and fill in values. `.env` 
 
 Most content changes don't require touching component code:
 
-- **Patreon tiers and perks** → edit `src/data/tiers.ts`
+- **Patreon fallback names and perks** → edit `src/data/tiers.ts`
 - **Latest videos** → pulled from YouTube API at build time. Workflow rebuilds nightly.
-- **Instagram posts** → managed via [Behold](https://behold.so) dashboard, no rebuild needed
-- **Shop products** → pulled from Fourthwall Storefront API at build time. Section currently disabled during rebrand.
+- **Instagram posts** → managed via [Behold](https://behold.so) when the feed component is used
+- **Shop products** → pulled from Fourthwall Storefront API at build time
 
 Anything else (hero copy, About section, etc.) lives in the relevant component file in `src/components/`.
 
@@ -96,10 +96,10 @@ Embedded via Behold (Pro plan). The Behold script renders the widget client-side
 Build-time fetch of the latest products from the Fourthwall Storefront API using `FOURTHWALL_PUBLIC_TOKEN`. Renders up to four product cards; falls back to a CTA pointing at `shop.currentheading.com` when the token is missing or the fetch fails.
 
 ### Patreon
-External link only, no API. Points to [members.currentheading.com](https://members.currentheading.com).
+The homepage uses one restrained support link to [members.currentheading.com](https://members.currentheading.com). Current Heading tier names remain in `src/data/tiers.ts` as a safe source for future membership surfaces.
 
 ### Podcast
-Ground Loop ("A Companion to Current Heading") is live at [podcast.currentheading.com](https://podcast.currentheading.com), hosted on Fireside. The latest episode embeds via the Fireside player (`player.fireside.fm/v3/cSzCML9e/latest`). Platform buttons (Apple Podcasts, Spotify, Overcast, RSS) all point to `podcast.currentheading.com` for now. Swap them for direct platform URLs when those are confirmed.
+Ground Loop ("A Companion to Current Heading") is live at [podcast.currentheading.com](https://podcast.currentheading.com), hosted on Fireside. The homepage links to the podcast site without preloading an audio player.
 
 ## Brand tokens
 
@@ -109,12 +109,12 @@ Current Heading palette:
 
 | Token | Value | Use |
 |-------|-------|-----|
-| Ink | `#0E0F11` | Text, mark on light |
-| Bone | `#F4F1EA` | Light backgrounds, mark on dark |
-| Red | `#B4232A` | Accent only |
-| Blue | `#537694` | Rare secondary, data viz |
+| Canvas | `oklch(15% 0.008 55)` | Warm near-black page background |
+| Surface | `oklch(19% 0.009 55)` | Quiet section contrast |
+| Paper | `oklch(94% 0.012 75)` | Primary text |
+| Accent | `oklch(65% 0.16 42)` | Actions and compact signals |
 
-Discipline: roughly 80% neutrals, 15% red, 5% blue.
+Discipline: neutrals carry the page. Oxide orange stays under roughly 10% of the visual weight.
 
 Logo files live in `public/images/`. Use `current-heading-mark-{light,dark}.svg` for the mark and `current-heading-wordmark-{light,dark}.svg` for the wordmark version.
 
@@ -146,13 +146,10 @@ Pushes to `main` auto-deploy via GitHub Actions to GitHub Pages.
 - LCP under 2.5s on 4G
 - Images served as WebP with fallbacks
 
-## Known placeholders
+## Social and search assets
 
-These are intentional. Don't "fix" them in cleanup passes:
-
-- OG card image (`/images/og-card.jpg`). To be designed.
-
-Update these when the underlying thing exists.
+- Open Graph card: `public/images/og-card.jpg`
+- Sitemap route: `src/pages/sitemap-index.xml.ts`
 
 ## License
 

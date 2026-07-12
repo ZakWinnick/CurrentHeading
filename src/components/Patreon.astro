@@ -1,81 +1,21 @@
 ---
 import Icon from "./icons.astro";
-import { TIERS } from "../data/tiers";
-import { fetchPatreonStats } from "../lib/patreon";
-
-const stats = await fetchPatreonStats();
-
-// API tiers when available, otherwise the static fallback. Mark the middle
-// tier as featured when there are 3+ tiers (matches the editorial layout).
-const liveTiers = stats?.tiers ?? null;
-const tiers = liveTiers
-  ? liveTiers.map((t, i) => ({
-      id: `T-${String(i + 1).padStart(2, "0")}`,
-      name: t.name,
-      price: t.price,
-      paragraphs: t.paragraphs,
-      featured: liveTiers.length >= 3 && i === 1,
-    }))
-  : TIERS.map((t) => ({
-      id: t.id,
-      name: t.name,
-      price: t.price,
-      paragraphs: null as string[] | null,
-      perks: t.perks,
-      featured: t.featured ?? false,
-    }));
 ---
-<section class="ww-section ww-section--red" id="patreon">
-  <div class="ww-container">
-    <div class="ww-eyebrow-row">
-      <span class="ww-eyebrow"><span class="ww-idx" style="color: var(--ww-black);">05</span> &nbsp; Community</span>
-      <span class="ww-bar"></span>
-      <span class="ww-eyebrow">
-        {stats && stats.patronCount > 0
-          ? `${stats.patronCount.toLocaleString()} patrons strong`
-          : "members.currentheading.com"}
-      </span>
-    </div>
-    <div class="ww-patreon__head">
-      <h2>
-        Keep the channel<br />
-        independent.
-      </h2>
+<section class="ww-section ww-support" id="support" aria-labelledby="support-title">
+  <div class="ww-container ww-support__grid">
+    <div>
+      <p class="ww-kicker">Support the work</p>
+      <h2 id="support-title">Help make the next trip possible.</h2>
       <p>
-        Patreon members fund the time, the trips, and the gear that makes
-        Current Heading possible. Three tiers, one Discord (called The
-        Charging Hangar), and a small group of people who care about this
-        stuff as much as I do.
+        Members help cover travel, production time, and the gear behind Current
+        Heading. The Charging Hangar keeps the conversation going between releases.
       </p>
     </div>
-
-    <div class="ww-patreon__tiers">
-      {tiers.map((t) => (
-        <div class={"ww-tier" + (t.featured ? " ww-tier--featured" : "")}>
-          <span class="ww-tier__id">{t.id}{t.featured ? " · Most popular" : ""}</span>
-          <div class="ww-tier__name">{t.name}</div>
-          <div class="ww-tier__price">${t.price}<span class="unit">/ month</span></div>
-          {t.paragraphs ? (
-            <div class="ww-tier__copy">
-              {t.paragraphs.map((p) => <p>{p}</p>)}
-            </div>
-          ) : (
-            <ul class="ww-tier__perks">
-              {(t as { perks: string[] }).perks.map((p) => <li>{p}</li>)}
-            </ul>
-          )}
-        </div>
-      ))}
-    </div>
-
-    <div class="ww-patreon__cta">
-      <a class="ww-btn ww-btn--inverse" href="https://members.currentheading.com" target="_blank" rel="noopener">
-        Join on Patreon <Icon kind="arrow" />
+    <div class="ww-support__action">
+      <a class="ww-btn ww-btn--primary" href="https://members.currentheading.com" target="_blank" rel="noopener">
+        See membership options <Icon kind="arrow" />
       </a>
-      <a class="ww-discord" href="https://members.currentheading.com" target="_blank" rel="noopener">
-        <Icon kind="discord" />
-        The Charging Hangar
-      </a>
+      <span>Day-trip · Cross-country · Long-haul</span>
     </div>
   </div>
 </section>

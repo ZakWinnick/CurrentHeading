@@ -2,28 +2,26 @@
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
-import Marquee from "../components/Marquee.astro";
-import About from "../components/About.astro";
+import Lanes from "../components/Lanes.astro";
 import LatestVideos from "../components/LatestVideos.astro";
+import About from "../components/About.astro";
 import Podcast from "../components/Podcast.astro";
-import InstagramFeed from "../components/InstagramFeed.astro";
 import Patreon from "../components/Patreon.astro";
 import Shop from "../components/Shop.astro";
-import BigWord from "../components/BigWord.astro";
 import Footer from "../components/Footer.astro";
 
 import "../styles/global.css";
 ---
 <Base>
   <Nav />
-  <Hero />
-  <Marquee />
-  <About />
-  <LatestVideos />
-  <InstagramFeed />
-  <Podcast />
-  <Patreon />
-  <Shop />
-  <BigWord />
+  <main>
+    <Hero />
+    <Lanes />
+    <LatestVideos />
+    <About />
+    <Podcast />
+    <Patreon />
+    <Shop />
+  </main>
   <Footer />
 </Base>
