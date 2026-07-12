@@ -127,3 +127,32 @@ test("large below-fold photographs use responsive modern sources", async () => {
     assert.match(source, /type="image\/webp"/);
   }
 });
+
+test("About omits the removed charging-site quote", async () => {
+  const about = await read("src/components/About.astro");
+  const css = await read("src/styles/global.css");
+  assert.doesNotMatch(about, /The plug is only part of the stop/i);
+  assert.doesNotMatch(about, /ww-about__quote/);
+  assert.doesNotMatch(css, /\.ww-about__quote/);
+});
+
+test("hero content is vertically centered below the fixed header", async () => {
+  const css = await read("src/styles/global.css");
+  assert.match(css, /\.ww-hero\s*\{[^}]*align-items:\s*center/s);
+  assert.match(css, /\.ww-hero\s*\{[^}]*padding:\s*calc\(68px \+ 2rem\) var\(--ww-gutter\) 2rem/s);
+});
+
+test("desktop navigation link text is vertically centered", async () => {
+  const css = await read("src/styles/global.css");
+  assert.match(css, /\.ww-nav__links a,\s*\.ww-nav__cta\s*\{[^}]*display:\s*inline-flex/s);
+});
+
+test("Community heading and introduction use compact spacing", async () => {
+  const css = await read("src/styles/global.css");
+  assert.match(css, /\.ww-patreon \.ww-section-intro\s*\{[^}]*margin-bottom:\s*1\.25rem/s);
+});
+
+test("desktop Shop copy is vertically centered beside products", async () => {
+  const css = await read("src/styles/global.css");
+  assert.match(css, /@media \(min-width: 760px\)[\s\S]*?\.ww-shop__grid\s*\{[^}]*align-items:\s*center/s);
+});
