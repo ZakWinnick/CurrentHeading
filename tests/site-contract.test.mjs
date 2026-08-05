@@ -65,10 +65,14 @@ test("navigation retains section access on mobile", async () => {
   const nav = await read("src/components/Nav.astro");
   const hero = await read("src/components/Hero.astro");
   assert.match(nav, /<details[^>]*class="ww-nav__menu"/);
-  assert.match(nav, /<summary[^>]*>\s*Menu\s*<\/summary>/s);
+  // The summary is an icon button; "Menu" is its accessible name.
+  assert.match(nav, /<summary[^>]*>[\s\S]*?ww-sr-only">Menu<\/span>[\s\S]*?<\/summary>/s);
+  // Desktop and mobile both render from one array, so assert the data and the
+  // binding rather than five literal hrefs.
   for (const href of ["#videos", "#about", "#podcast", "#patreon", "#shop"]) {
-    assert.match(nav, new RegExp(`href=["']${href}["']`));
+    assert.match(nav, new RegExp(`href:\\s*["']${href}["']`));
   }
+  assert.match(nav, /class="ww-nav__menu-links"[\s\S]*?href=\{section\.href\}/s);
   assert.match(hero, /href=["']#videos["']/);
   assert.doesNotMatch(hero, /href=["']#work["']/);
 });
@@ -144,7 +148,8 @@ test("hero content is vertically centered below the fixed header", async () => {
 
 test("desktop navigation link text is vertically centered", async () => {
   const css = await read("src/styles/global.css");
-  assert.match(css, /\.ww-nav__links a,\s*\.ww-nav__cta\s*\{[^}]*display:\s*inline-flex/s);
+  assert.match(css, /\.ww-nav__links a\s*\{[^}]*display:\s*inline-flex/s);
+  assert.match(css, /\.ww-nav__links a\s*\{[^}]*align-items:\s*center/s);
 });
 
 test("Community heading and introduction use compact spacing", async () => {
