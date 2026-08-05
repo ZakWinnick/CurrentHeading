@@ -1,27 +1,139 @@
-<nav class="ww-nav">
-  <a href="#top" class="ww-nav__brand" aria-label="Current Heading home">
-    <img src="/images/current-heading-avatar-dark.svg" alt="" width="36" height="36" />
-    <span class="ww-nav__wordmark">Current Heading</span>
-  </a>
+---
+import Icon from "./icons.astro";
 
-  <div class="ww-nav__links" aria-label="Primary navigation">
-    <a href="#videos">Channel</a>
-    <a href="#about">About</a>
-    <a href="#podcast">Ground Loop</a>
-    <a href="#patreon">Patreon</a>
-    <a href="#shop">Shop</a>
-  </div>
+// One source of truth for both the desktop cluster and the mobile panel.
+// Ordered to match the page: About, Latest Videos, Ground Loop, Patreon, Shop.
+const sections = [
+  { href: "#about", label: "About" },
+  { href: "#videos", label: "Channel" },
+  { href: "#podcast", label: "Ground Loop" },
+  { href: "#patreon", label: "Patreon" },
+  { href: "#shop", label: "Shop" },
+];
 
-  <a class="ww-nav__cta" href="#patreon">Support</a>
+const socials = [
+  { href: "https://youtube.com/@currentheading", kind: "yt", label: "Current Heading on YouTube" },
+  { href: "https://instagram.com/currentheading", kind: "ig", label: "Current Heading on Instagram" },
+  { href: "https://x.com/currentheading", kind: "x", label: "Current Heading on X" },
+  { href: "https://members.currentheading.com", kind: "patreon", label: "Current Heading on Patreon" },
+] as const;
+---
+<nav class="ww-nav" id="site-nav" aria-label="Primary">
+  <div class="ww-nav__shell">
+    <a href="#top" class="ww-nav__brand" aria-label="Current Heading home">
+      <!-- The plateless mark: the avatar variant carries an opaque square that
+           shows as a dark tile against the translucent capsule. -->
+      <img src="/images/current-heading-mark-dark.svg" alt="" width="36" height="36" />
+      <span class="ww-nav__wordmark">Current Heading</span>
+    </a>
 
-  <details class="ww-nav__menu">
-    <summary>Menu</summary>
-    <div class="ww-nav__menu-panel">
-      <a href="#videos">Channel</a>
-      <a href="#about">About</a>
-      <a href="#podcast">Ground Loop</a>
-      <a href="#patreon">Patreon</a>
-      <a href="#shop">Shop</a>
+    <div class="ww-nav__cluster">
+      <ul class="ww-nav__links">
+        {sections.map((section) => (
+          <li>
+            <a href={section.href} data-nav-link>{section.label}</a>
+          </li>
+        ))}
+      </ul>
+
+      <span class="ww-nav__rule" aria-hidden="true"></span>
+
+      <ul class="ww-nav__socials">
+        {socials.map((social) => (
+          <li>
+            <a href={social.href} target="_blank" rel="noopener" aria-label={social.label}>
+              <Icon kind={social.kind} size={17} />
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
-  </details>
+
+    <details class="ww-nav__menu">
+      <summary>
+        <Icon kind="menu" size={18} />
+        <span class="ww-sr-only">Menu</span>
+      </summary>
+      <div class="ww-nav__menu-panel">
+        <div class="ww-nav__menu-links">
+          {sections.map((section) => (
+            <a href={section.href} data-nav-link>{section.label}</a>
+          ))}
+        </div>
+        <div class="ww-nav__menu-socials">
+          {socials.map((social) => (
+            <a href={social.href} target="_blank" rel="noopener" aria-label={social.label}>
+              <Icon kind={social.kind} size={18} />
+            </a>
+          ))}
+        </div>
+      </div>
+    </details>
+  </div>
 </nav>
+
+<script>
+  const nav = document.getElementById("site-nav");
+  const menu = document.querySelector<HTMLDetailsElement>(".ww-nav__menu");
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"));
+
+  // Firm the header up once it leaves the hero photograph.
+  if (nav) {
+    const syncScrolled = () => nav.classList.toggle("is-scrolled", window.scrollY > 24);
+    syncScrolled();
+    window.addEventListener("scroll", syncScrolled, { passive: true });
+  }
+
+  // Mark the section currently crossing the middle of the viewport.
+  const targets = links
+    .map((link) => link.getAttribute("href"))
+    .filter((href): href is string => !!href && href.startsWith("#"))
+    .map((href) => document.querySelector(href))
+    .filter((el): el is Element => !!el);
+
+  if (targets.length) {
+    const setActive = (id: string | null) => {
+      links.forEach((link) => {
+        const on = !!id && link.getAttribute("href") === id;
+        link.classList.toggle("is-active", on);
+        if (on) link.setAttribute("aria-current", "true");
+        else link.removeAttribute("aria-current");
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const inBand = entries.filter((entry) => entry.isIntersecting);
+        if (inBand.length) setActive(`#${inBand[0].target.id}`);
+      },
+      { rootMargin: "-48% 0px -48% 0px", threshold: 0 },
+    );
+
+    // Deduplicate: desktop and mobile render the same hrefs.
+    Array.from(new Set(targets)).forEach((target) => observer.observe(target));
+  }
+
+  // Native disclosure needs the dismissals browsers do not give it.
+  if (menu) {
+    const summary = menu.querySelector("summary");
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        menu.open = false;
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (menu.open && event.target instanceof Node && !menu.contains(event.target)) {
+        menu.open = false;
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menu.open) {
+        menu.open = false;
+        summary?.focus();
+      }
+    });
+  }
+</script>

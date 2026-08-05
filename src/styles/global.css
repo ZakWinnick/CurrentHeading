@@ -16,6 +16,7 @@
   --ww-container: 1280px;
   --ww-gutter: clamp(1.25rem, 4vw, 4rem);
   --ww-section: clamp(4.5rem, 8vw, 8rem);
+  --ww-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
@@ -105,6 +106,18 @@ section[id] {
   margin-inline: auto;
 }
 
+.ww-sr-only {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .ww-section {
   padding: var(--ww-section) var(--ww-gutter);
   border-top: 1px solid var(--ww-line);
@@ -189,14 +202,55 @@ section[id] {
   top: 0;
   left: 0;
   right: 0;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
+}
+
+/* At the top of the page the header is a full-bleed bar over the hero
+   photograph. Once scrolled it contracts into a floating glass capsule.
+   The transparent border reserves its own space so nothing shifts. */
+.ww-nav__shell {
+  display: flex;
+  width: 100%;
   min-height: 68px;
-  padding: 0.75rem var(--ww-gutter);
-  border-bottom: 1px solid oklch(94% 0.012 75 / 0.14);
-  background: oklch(15% 0.008 55 / 0.92);
-  backdrop-filter: blur(16px);
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-inline: var(--ww-gutter);
+  border: 1px solid transparent;
+  border-bottom-color: oklch(94% 0.012 75 / 0.09);
+  margin-inline: auto;
+  background: oklch(15% 0.008 55 / 0.7);
+  /* Both states declare the same filter and shadow functions in the same
+     order; mismatched lists interpolate discretely and would jump. */
+  backdrop-filter: blur(16px) saturate(100%);
+  box-shadow:
+    0 0 0 oklch(8% 0.01 55 / 0),
+    inset 0 1px 0 oklch(94% 0.012 75 / 0);
+  transition:
+    width 460ms var(--ww-ease),
+    min-height 460ms var(--ww-ease),
+    margin-top 460ms var(--ww-ease),
+    padding-inline 460ms var(--ww-ease),
+    border-radius 460ms var(--ww-ease),
+    border-color 460ms var(--ww-ease),
+    background 460ms var(--ww-ease),
+    box-shadow 460ms var(--ww-ease),
+    backdrop-filter 460ms var(--ww-ease);
+}
+
+.ww-nav.is-scrolled .ww-nav__shell {
+  width: calc(100% - 2 * var(--ww-gutter));
+  min-height: 58px;
+  margin-top: 0.7rem;
+  padding-inline: clamp(0.9rem, 1.6vw, 1.4rem);
+  border-color: oklch(94% 0.012 75 / 0.14);
+  border-radius: 999px;
+  /* Saturation is what separates glass from a grey scrim: the photograph
+     underneath keeps its colour as it blurs. */
+  background: oklch(19% 0.009 55 / 0.5);
+  backdrop-filter: blur(22px) saturate(180%);
+  box-shadow:
+    0 14px 34px oklch(8% 0.01 55 / 0.5),
+    inset 0 1px 0 oklch(94% 0.012 75 / 0.1);
 }
 
 .ww-nav__brand {
@@ -207,9 +261,11 @@ section[id] {
   gap: 0.7rem;
 }
 
+/* The plateless mark reads larger than the avatar at the same box, since its
+   dial runs closer to the edge of its own canvas. */
 .ww-nav__brand img {
-  width: 32px;
-  height: 32px;
+  width: 29px;
+  height: 29px;
 }
 
 .ww-nav__wordmark {
@@ -222,9 +278,84 @@ section[id] {
   text-transform: uppercase;
 }
 
-.ww-nav__links,
-.ww-nav__cta {
+.ww-nav__cluster {
   display: none;
+}
+
+.ww-nav__links,
+.ww-nav__socials {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  list-style: none;
+}
+
+.ww-nav__links {
+  gap: clamp(1rem, 2.1vw, 2rem);
+}
+
+.ww-nav__links a {
+  position: relative;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--ww-bone);
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Anchored inside the link box, not to the bar's bottom rule, so it reads the
+   same in the full-bleed bar and in the capsule. */
+.ww-nav__links a::after {
+  position: absolute;
+  right: 0;
+  bottom: 9px;
+  left: 0;
+  height: 2px;
+  background: var(--ww-accent);
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.35);
+  transform-origin: left center;
+  transition:
+    opacity 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ww-nav__links a.is-active {
+  color: var(--ww-paper);
+}
+
+.ww-nav__links a.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Divides in-page anchors from off-site destinations. */
+.ww-nav__rule {
+  width: 1px;
+  height: 20px;
+  margin-inline: clamp(0.85rem, 1.6vw, 1.4rem);
+  background: var(--ww-line);
+}
+
+.ww-nav__socials {
+  gap: 0.1rem;
+}
+
+.ww-nav__socials a {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  color: var(--ww-muted);
+  transition:
+    color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ww-nav__menu {
@@ -233,42 +364,106 @@ section[id] {
 
 .ww-nav__menu summary {
   display: flex;
-  min-width: 62px;
-  min-height: 44px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   list-style: none;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--ww-line);
-  font-size: 0.78rem;
-  font-weight: 600;
+  border-radius: 3px;
+  color: var(--ww-bone);
+  transition:
+    border-color 180ms var(--ww-ease),
+    border-radius 460ms var(--ww-ease),
+    color 180ms var(--ww-ease);
+}
+
+/* Inside the capsule the control has to answer the container's curve, or its
+   square corner cuts into the rounded end. */
+.ww-nav.is-scrolled .ww-nav__menu summary {
+  border-radius: 999px;
 }
 
 .ww-nav__menu summary::-webkit-details-marker {
   display: none;
 }
 
+.ww-nav__menu[open] summary {
+  border-color: var(--ww-bone);
+  color: var(--ww-paper);
+}
+
+/* Three rules resolve into a close mark while the panel is open. The origin is
+   the viewBox centre, so each line converges on it before it rotates. */
+.ww-menu-glyph line {
+  transform-origin: 8px 8px;
+  transition:
+    transform 260ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 160ms linear;
+}
+
+.ww-nav__menu[open] .ww-menu-glyph__top {
+  transform: rotate(45deg) translateY(3px);
+}
+
+.ww-nav__menu[open] .ww-menu-glyph__mid {
+  opacity: 0;
+}
+
+.ww-nav__menu[open] .ww-menu-glyph__bot {
+  transform: rotate(-45deg) translateY(-3px);
+}
+
 .ww-nav__menu-panel {
   position: absolute;
   top: calc(100% + 0.75rem);
   right: 0;
-  display: grid;
-  width: min(76vw, 260px);
+  width: min(78vw, 268px);
   border: 1px solid var(--ww-line);
+  border-radius: 0;
   background: var(--ww-surface);
+  box-shadow: 0 20px 44px oklch(8% 0.01 55 / 0.55);
+  transition: border-radius 460ms var(--ww-ease);
 }
 
-.ww-nav__menu-panel a {
+.ww-nav.is-scrolled .ww-nav__menu-panel {
+  border-radius: 18px;
+}
+
+.ww-nav__menu-links {
+  display: grid;
+}
+
+.ww-nav__menu-links a {
   display: flex;
   min-height: 52px;
   align-items: center;
   padding-inline: 1rem;
   border-bottom: 1px solid var(--ww-line);
   font-size: 0.9rem;
+  font-weight: 600;
 }
 
-.ww-nav__menu-panel a:last-child {
-  border-bottom: 0;
+.ww-nav__menu-links a.is-active {
+  color: var(--ww-accent);
+}
+
+.ww-nav__menu-socials {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.6rem;
+}
+
+.ww-nav__menu-socials a {
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  color: var(--ww-muted);
 }
 
 /* Hero */
@@ -663,36 +858,25 @@ section[id] {
   font-size: 0.75rem;
 }
 
-@media (min-width: 760px) {
-  .ww-nav {
-    grid-template-columns: 1fr auto 1fr;
-  }
-
-  .ww-nav__links {
+/* The cluster needs room for five anchors, the rule, and four icons. */
+@media (min-width: 900px) {
+  .ww-nav__cluster {
     display: flex;
     align-items: center;
-    gap: clamp(1.25rem, 3vw, 2.75rem);
-    font-size: 0.78rem;
-  }
-
-  .ww-nav__links a,
-  .ww-nav__cta {
-    display: inline-flex;
-    min-height: 44px;
-    align-items: center;
-  }
-
-  .ww-nav__cta {
-    display: inline-flex;
-    justify-self: end;
-    color: var(--ww-bone);
-    font-size: 0.78rem;
   }
 
   .ww-nav__menu {
     display: none;
   }
 
+  /* Capped so the capsule reads as a floating object rather than a wide bar
+     with rounded ends. Sized to the cluster's content, not the viewport. */
+  .ww-nav.is-scrolled .ww-nav__shell {
+    width: min(calc(100% - 2 * var(--ww-gutter)), 880px);
+  }
+}
+
+@media (min-width: 760px) {
   .ww-hero__media img {
     object-position: center 58%;
   }
@@ -753,6 +937,22 @@ section[id] {
   .ww-nav a:hover,
   .ww-footer a:hover {
     color: var(--ww-accent);
+  }
+
+  .ww-nav__links a:hover::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .ww-nav__socials a:hover,
+  .ww-nav__menu-socials a:hover {
+    background: var(--ww-surface-high);
+    color: var(--ww-accent);
+  }
+
+  .ww-nav__menu summary:hover {
+    border-color: var(--ww-bone);
+    color: var(--ww-paper);
   }
 }
 
