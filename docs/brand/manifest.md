@@ -28,6 +28,11 @@ because it is what actually served the images, not what was asked for.
 
 All paths are relative to `public/images/brand/`.
 
+Filenames below are the PNG masters as generated. **What ships is the WebP
+conversion of each**, at 1.5 MB in total against 51.9 MB of PNG. The masters
+are not committed. `public/images/brand/README.md` explains how to recover one,
+and `src/styles/brand.css` references the `.webp` files throughout.
+
 ### textures/
 
 Structural chart line work. Full bleed section backgrounds, 2752x1536, painted

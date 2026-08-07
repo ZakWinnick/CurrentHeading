@@ -35,22 +35,22 @@ used together or on their own.
 
 | Class | Asset | Behaviour |
 |-------|-------|-----------|
-| `ww-tex--sectional` | `textures/sectional.png` | Cover |
-| `ww-tex--contour` | `textures/contour.png` | Cover |
-| `ww-tex--isobar` | `textures/isobar.png` | Cover |
-| `ww-tex--grid` | `textures/grid.png` | Cover |
-| `ww-tex--aluminium` | `macro/aluminium.png` | Cover |
-| `ww-tex--composite` | `macro/composite.png` | Cover |
-| `ww-tex--compass` | `patterns/compass.png` | Tiled at 340px |
-| `ww-tex--connector` | `patterns/connector.png` | Tiled at 340px |
+| `ww-tex--sectional` | `textures/sectional.webp` | Cover |
+| `ww-tex--contour` | `textures/contour.webp` | Cover |
+| `ww-tex--isobar` | `textures/isobar.webp` | Cover |
+| `ww-tex--grid` | `textures/grid.webp` | Cover |
+| `ww-tex--aluminium` | `macro/aluminium.webp` | Cover |
+| `ww-tex--composite` | `macro/composite.webp` | Cover |
+| `ww-tex--compass` | `patterns/compass.webp` | Tiled at 340px |
+| `ww-tex--connector` | `patterns/connector.webp` | Tiled at 340px |
 
 ### Atmosphere modifiers
 
 | Class | Asset | Behaviour |
 |-------|-------|-----------|
-| `ww-atmo--haze` | `overlays/haze.png` | Cover, screen blend |
-| `ww-atmo--bloom` | `overlays/bloom.png` | Cover, screen blend |
-| `ww-atmo--grain` | `overlays/grain.png` | Tiled at 600px, screen blend |
+| `ww-atmo--haze` | `overlays/haze.webp` | Cover, screen blend |
+| `ww-atmo--bloom` | `overlays/bloom.webp` | Cover, screen blend |
+| `ww-atmo--grain` | `overlays/grain.webp` | Tiled at 600px, screen blend |
 
 ## Currently applied
 
@@ -95,7 +95,7 @@ bearing enough that removing it breaks the design, the design is wrong.
 
 ## The section marks
 
-`marks/channel.png`, `marks/loop.png`, and `marks/shop.png` are generated but
+`marks/channel.webp`, `marks/loop.webp`, and `marks/shop.webp` are generated but
 **not wired in**. They are flat art on a white background, so they need their
 background knocked out before use, and they are optional by nature. If you want
 them, knock out the white to transparent, export at the size you need, and
@@ -103,7 +103,7 @@ place them next to a section kicker:
 
 ```html
 <p class="ww-kicker">
-  <img src="/images/brand/marks/channel.png" alt="" width="16" height="16" />
+  <img src="/images/brand/marks/channel.webp" alt="" width="16" height="16" />
   Latest videos
 </p>
 ```

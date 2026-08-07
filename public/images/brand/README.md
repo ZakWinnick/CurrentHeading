@@ -4,35 +4,43 @@ Generated abstract texture, pattern, atmosphere, and mark assets for the
 Sectional Noir system. See `docs/brand/manifest.md` for what each one is and
 `docs/brand/embed-guide.md` for how the layer works.
 
-## The image files are not in this commit
+## What ships
 
-The session that generated these assets could not download them. The Higgsfield
-CDN host `d8j0ntlcm91z4.cloudfront.net` is denied by the org egress policy, so
-every fetch returned `403` on CONNECT. The CSS layer, the component wiring, and
-all documentation are committed and complete. Only the fourteen binaries are
-missing.
+Fourteen WebP files, 1.5 MB in total. That is what `src/styles/brand.css`
+references and what the site serves.
 
-Until they are added, every decorative layer paints nothing and the sections
-fall back to flat canvas. The site builds and renders correctly either way.
+```
+textures/   sectional  contour  isobar  grid
+overlays/   haze  grain  bloom
+patterns/   compass  connector
+marks/      channel  loop  shop
+macro/      aluminium  composite
+```
 
-## Adding them
+The 2k PNG masters these were converted from are deliberately **not** committed.
+At 51.9 MB against 1.5 MB of WebP they were pure weight for files nothing
+loaded. Recover any of them with the fetch script below. The layer renders at 4
+to 7 percent opacity, where the difference between the two formats is not
+detectable.
 
-From a machine with normal network access, run:
+## Regenerating a master
 
 ```bash
 bash scripts/fetch-brand-assets.sh --webp
 ```
 
-That writes all fourteen files to the right paths under this folder, plus WebP
-copies. Then commit them.
+That re-downloads all fourteen PNG masters from the Higgsfield CDN and writes
+WebP copies beside them. Only the WebP files should be committed. Delete the
+PNGs again once you are done with them.
 
 The script is invoked through `bash` because it was committed through the
 GitHub API, which cannot set a file mode, so it arrived without its executable
 bit. Run `chmod +x scripts/fetch-brand-assets.sh` once if you prefer to call it
 directly.
 
-Alternatively download each file from the Higgsfield generation history and
-place it by hand using the table below.
+If every download fails with a 403, the machine is behind an egress policy that
+blocks the Higgsfield CDN. Download the files from the Higgsfield generation
+history instead and place them by hand using the table below.
 
 ## File map
 
@@ -55,10 +63,8 @@ Base URL: `https://d8j0ntlcm91z4.cloudfront.net/user_36Rfy1C7ZQuqYqjMQjnkt58XQV3
 | `macro/aluminium.png` | `hf_20260807_045316_ea7b0713-95d3-4fbb-90f5-563a2c5725af.png` |
 | `macro/composite.png` | `hf_20260807_045316_024a4001-fd2e-4b55-913e-1d65add7f6fc.png` |
 
-## Before committing the binaries
+## Adding a new asset
 
-These are 2k PNGs and will be large. The rest of `public/images/` is served as
-AVIF and WebP with explicit dimensions, per `DESIGN.md`. Convert these to WebP
-at minimum before committing, and update the `url()` references in
-`src/styles/brand.css` to match. The `--webp` flag does the conversion when
-`cwebp` is available.
+Generate it inside the palette in `docs/brand/palette.md`, convert to WebP,
+commit only the WebP, add a modifier class in `src/styles/brand.css`, and
+record it in `docs/brand/manifest.md` with its model and credit cost.
