@@ -44,28 +44,28 @@
 }
 
 .ww-tex--sectional::before {
-  background-image: url("/images/brand/textures/sectional.png");
+  background-image: url("/images/brand/textures/sectional.webp");
 }
 
 .ww-tex--contour::before {
-  background-image: url("/images/brand/textures/contour.png");
+  background-image: url("/images/brand/textures/contour.webp");
 }
 
 .ww-tex--isobar::before {
-  background-image: url("/images/brand/textures/isobar.png");
+  background-image: url("/images/brand/textures/isobar.webp");
 }
 
 .ww-tex--grid::before {
-  background-image: url("/images/brand/textures/grid.png");
+  background-image: url("/images/brand/textures/grid.webp");
 }
 
 /* Material studies. Same slot, photographic rather than line art. */
 .ww-tex--aluminium::before {
-  background-image: url("/images/brand/macro/aluminium.png");
+  background-image: url("/images/brand/macro/aluminium.webp");
 }
 
 .ww-tex--composite::before {
-  background-image: url("/images/brand/macro/composite.png");
+  background-image: url("/images/brand/macro/composite.webp");
 }
 
 /* Tiling patterns. Same slot, repeated rather than covered. */
@@ -77,11 +77,11 @@
 }
 
 .ww-tex--compass::before {
-  background-image: url("/images/brand/patterns/compass.png");
+  background-image: url("/images/brand/patterns/compass.webp");
 }
 
 .ww-tex--connector::before {
-  background-image: url("/images/brand/patterns/connector.png");
+  background-image: url("/images/brand/patterns/connector.webp");
 }
 
 /* Atmosphere passes. Rendered on black, composited with screen so the black
@@ -92,15 +92,15 @@
 }
 
 .ww-atmo--haze::after {
-  background-image: url("/images/brand/overlays/haze.png");
+  background-image: url("/images/brand/overlays/haze.webp");
 }
 
 .ww-atmo--bloom::after {
-  background-image: url("/images/brand/overlays/bloom.png");
+  background-image: url("/images/brand/overlays/bloom.webp");
 }
 
 .ww-atmo--grain::after {
-  background-image: url("/images/brand/overlays/grain.png");
+  background-image: url("/images/brand/overlays/grain.webp");
   background-size: 600px;
   background-repeat: repeat;
   opacity: var(--ww-atmo-opacity, 0.05);
