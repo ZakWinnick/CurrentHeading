@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Fetch the generated Sectional Noir brand assets into public/images/brand/.
+# Fetch the Sectional Noir brand asset masters into public/images/brand/.
 #
 # The session that generated these assets could not download them, because the
 # Higgsfield CDN is blocked by the org egress policy. Run this from a machine
@@ -30,9 +30,6 @@ ASSETS=(
   "overlays/bloom.png:hf_20260807_045303_e1b34921-04ba-422f-97cb-b7629e7f669c.png"
   "patterns/compass.png:hf_20260807_045303_088c2991-33d2-4698-a0e1-879d8904e8a1.png"
   "patterns/connector.png:hf_20260807_045303_97777858-9f14-4563-9298-04243222244d.png"
-  "marks/channel.png:hf_20260807_045303_e19d32fe-1d0f-444b-9b74-72b8daab96c3.png"
-  "marks/loop.png:hf_20260807_045303_9925d0f9-8063-49d6-a1d8-41435dccd399.png"
-  "marks/shop.png:hf_20260807_045303_7ee5a82d-4361-48a2-9887-0abc8d61d03d.png"
   "macro/aluminium.png:hf_20260807_045316_ea7b0713-95d3-4fbb-90f5-563a2c5725af.png"
   "macro/composite.png:hf_20260807_045316_024a4001-fd2e-4b55-913e-1d65add7f6fc.png"
 )
