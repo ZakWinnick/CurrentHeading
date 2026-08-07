@@ -20,11 +20,16 @@ fall back to flat canvas. The site builds and renders correctly either way.
 From a machine with normal network access, run:
 
 ```bash
-./scripts/fetch-brand-assets.sh
+bash scripts/fetch-brand-assets.sh --webp
 ```
 
-That writes all fourteen files to the right paths under this folder. Then
-commit them.
+That writes all fourteen files to the right paths under this folder, plus WebP
+copies. Then commit them.
+
+The script is invoked through `bash` because it was committed through the
+GitHub API, which cannot set a file mode, so it arrived without its executable
+bit. Run `chmod +x scripts/fetch-brand-assets.sh` once if you prefer to call it
+directly.
 
 Alternatively download each file from the Higgsfield generation history and
 place it by hand using the table below.
@@ -54,6 +59,6 @@ Base URL: `https://d8j0ntlcm91z4.cloudfront.net/user_36Rfy1C7ZQuqYqjMQjnkt58XQV3
 
 These are 2k PNGs and will be large. The rest of `public/images/` is served as
 AVIF and WebP with explicit dimensions, per `DESIGN.md`. Convert these to WebP
-at minimum before committing, and update the `url()` references in the brand
-asset layer at `src/styles/brand.css` to match. The fetch script
-will do the conversion if `cwebp` or `sharp` is available.
+at minimum before committing, and update the `url()` references in
+`src/styles/brand.css` to match. The `--webp` flag does the conversion when
+`cwebp` is available.
