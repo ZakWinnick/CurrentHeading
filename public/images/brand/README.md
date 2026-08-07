@@ -25,17 +25,12 @@ detectable.
 ## Regenerating a master
 
 ```bash
-bash scripts/fetch-brand-assets.sh --webp
+./scripts/fetch-brand-assets.sh --webp
 ```
 
 That re-downloads the eleven PNG masters from the Higgsfield CDN and writes
 WebP copies beside them. Only the WebP files should be committed. Delete the
 PNGs again once you are done with them.
-
-The script is invoked through `bash` because it was committed through the
-GitHub API, which cannot set a file mode, so it arrived without its executable
-bit. Run `chmod +x scripts/fetch-brand-assets.sh` once if you prefer to call it
-directly.
 
 If every download fails with a 403, the machine is behind an egress policy that
 blocks the Higgsfield CDN. Download the files from the Higgsfield generation
