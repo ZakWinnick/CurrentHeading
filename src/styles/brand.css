@@ -1,0 +1,125 @@
+/* ---------------------------------------------------------------------------
+   Brand asset layer: Sectional Noir
+
+   Decorative texture, pattern, and atmosphere passes generated for Current
+   Heading. Every asset lives under /images/brand/ and stays inside the
+   documented palette.
+
+   These layers are painted by pseudo elements, so they never affect layout,
+   never enter the accessibility tree, and never take pointer events. If an
+   asset file is missing the layer simply paints nothing and the section falls
+   back to flat canvas, so the page degrades cleanly.
+
+   Opacity is deliberately low. Nothing here may reduce body text contrast.
+   --------------------------------------------------------------------------- */
+
+.ww-tex,
+.ww-atmo {
+  position: relative;
+  isolation: isolate;
+}
+
+.ww-tex > *,
+.ww-atmo > * {
+  position: relative;
+  z-index: 1;
+}
+
+.ww-tex::before,
+.ww-tex::after,
+.ww-atmo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* Structural chart textures. Full bleed, cover. */
+.ww-tex::before {
+  opacity: var(--ww-tex-opacity, 0.05);
+}
+
+.ww-tex--sectional::before {
+  background-image: url("/images/brand/textures/sectional.png");
+}
+
+.ww-tex--contour::before {
+  background-image: url("/images/brand/textures/contour.png");
+}
+
+.ww-tex--isobar::before {
+  background-image: url("/images/brand/textures/isobar.png");
+}
+
+.ww-tex--grid::before {
+  background-image: url("/images/brand/textures/grid.png");
+}
+
+/* Material studies. Same slot, photographic rather than line art. */
+.ww-tex--aluminium::before {
+  background-image: url("/images/brand/macro/aluminium.png");
+}
+
+.ww-tex--composite::before {
+  background-image: url("/images/brand/macro/composite.png");
+}
+
+/* Tiling patterns. Same slot, repeated rather than covered. */
+.ww-tex--compass::before,
+.ww-tex--connector::before {
+  background-size: 340px;
+  background-repeat: repeat;
+  opacity: var(--ww-tex-opacity, 0.04);
+}
+
+.ww-tex--compass::before {
+  background-image: url("/images/brand/patterns/compass.png");
+}
+
+.ww-tex--connector::before {
+  background-image: url("/images/brand/patterns/connector.png");
+}
+
+/* Atmosphere passes. Rendered on black, composited with screen so the black
+   drops out and only the light survives. Stacks above the texture. */
+.ww-atmo::after {
+  mix-blend-mode: screen;
+  opacity: var(--ww-atmo-opacity, 0.07);
+}
+
+.ww-atmo--haze::after {
+  background-image: url("/images/brand/overlays/haze.png");
+}
+
+.ww-atmo--bloom::after {
+  background-image: url("/images/brand/overlays/bloom.png");
+}
+
+.ww-atmo--grain::after {
+  background-image: url("/images/brand/overlays/grain.png");
+  background-size: 600px;
+  background-repeat: repeat;
+  opacity: var(--ww-atmo-opacity, 0.05);
+}
+
+/* Readability guards. Anyone asking for more contrast, or printing the page,
+   gets the flat canvas with no decorative layers at all. */
+@media (prefers-contrast: more) {
+  .ww-tex::before,
+  .ww-tex::after,
+  .ww-atmo::after {
+    display: none;
+  }
+}
+
+@media print {
+  .ww-tex::before,
+  .ww-tex::after,
+  .ww-atmo::after {
+    display: none;
+  }
+}

@@ -41,8 +41,25 @@ A photographer's field notebook laid over a technical site plan. The site is a r
 
 ## Motion
 
-No marquee, scanlines, grain layer, bounce, or decorative looping motion. Hover and focus transitions may use short ease-out transforms. Honor `prefers-reduced-motion`.
+No marquee, scanlines, bounce, or decorative looping motion. Hover and focus transitions may use short ease-out transforms. Honor `prefers-reduced-motion`.
+
+The ban on decorative looping motion is deliberate and still stands. An autoplaying hero video was costed and declined. Motion has to earn its place by carrying information, not atmosphere.
+
+## Texture and atmosphere
+
+Static decorative layers are permitted, within limits. This is a narrowing of the earlier blanket ban on grain, which applied when the site had no asset system of its own.
+
+- Textures are structural first. Chart line work, contours, isobars, and engineering grids, drawn in Sectional Line over Ramp Black.
+- Atmosphere passes, meaning haze, bloom, and grain, are composited with `screen` and sit above the texture.
+- Both are painted by pseudo elements. They never affect layout, never enter the accessibility tree, and never take pointer events.
+- Opacity stays between 0.04 and 0.07. Anything that measurably reduces body text contrast is wrong.
+- The entire decorative layer is removed under `prefers-contrast: more` and in print. If removing a texture breaks the design, the design is wrong.
+- One visual grammar throughout: charge behavior drawn in the language of aeronautical charts.
+
+See `docs/brand/embed-guide.md` for the classes and `docs/brand/manifest.md` for the assets.
 
 ## Imagery
 
-Use Zak's real photography. Serve responsive AVIF and WebP variants with explicit dimensions. The hero is a semantic `<picture>` with priority loading. Below-the-fold images are lazy-loaded.
+Use Zak's real photography. This is a credibility line, not a stylistic preference. The channel is built on being present at the thing being filmed.
+
+Generated imagery is limited to abstract texture, pattern, atmosphere, and marks. No generated photograph of a charger, an aircraft, a vehicle, or a person ships on this site, and no generated asset carries baked in text. Serve responsive AVIF and WebP variants with explicit dimensions. The hero is a semantic `<picture>` with priority loading. Below-the-fold images are lazy-loaded.
