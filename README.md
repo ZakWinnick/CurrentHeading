@@ -1,6 +1,6 @@
 # Current Heading
 
-Brand homepage for [Current Heading](https://currentheading.com), a YouTube channel covering EV ownership, DC fast charging, and aviation.
+Brand homepage for [Current Heading](https://currentheading.com), a YouTube channel covering EV ownership and charging infrastructure.
 
 ## Stack
 
