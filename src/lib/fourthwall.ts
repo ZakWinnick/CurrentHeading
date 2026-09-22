@@ -1,5 +1,5 @@
 // Build-time Fourthwall fetch. Pulls a small set of products from the
-// Storefront API and returns sanitized data (name, price, image, url).
+// Storefront API, with current mockups from the published shop feed.
 //
 // Env vars (GitHub Actions secrets, local .env):
 //   FOURTHWALL_PUBLIC_TOKEN       Public storefront token (the "ptkn_..." form)
@@ -31,15 +31,21 @@ interface FourthwallProduct {
 
 const PRODUCT_LIMIT = 4;
 
-export async function fetchShopProducts(): Promise<ShopProduct[]> {
-  const token = import.meta.env.FOURTHWALL_PUBLIC_TOKEN;
+interface FourthwallConfig {
+  FOURTHWALL_PUBLIC_TOKEN?: string;
+  FOURTHWALL_COLLECTION_SLUG?: string;
+  FOURTHWALL_SHOP_HOST?: string;
+}
+
+export async function fetchShopProducts(env: FourthwallConfig = import.meta.env): Promise<ShopProduct[]> {
+  const token = env.FOURTHWALL_PUBLIC_TOKEN;
   if (!token) {
     console.warn("[fourthwall] Missing FOURTHWALL_PUBLIC_TOKEN. Shop will show CTA fallback.");
     return [];
   }
 
-  const collection = import.meta.env.FOURTHWALL_COLLECTION_SLUG ?? "all";
-  const host = import.meta.env.FOURTHWALL_SHOP_HOST ?? "shop.currentheading.com";
+  const collection = env.FOURTHWALL_COLLECTION_SLUG ?? "all";
+  const host = env.FOURTHWALL_SHOP_HOST ?? "shop.currentheading.com";
   const url =
     `https://storefront-api.fourthwall.com/v1/collections/${encodeURIComponent(collection)}/products` +
     `?currency=USD&storefront_token=${encodeURIComponent(token)}`;
@@ -52,18 +58,40 @@ export async function fetchShopProducts(): Promise<ShopProduct[]> {
     }
     const data = (await res.json()) as { results?: FourthwallProduct[] };
     const raw = data.results ?? [];
+    const publishedImages = await fetchPublishedImages(host, collection);
 
     return raw.slice(0, PRODUCT_LIMIT).map((p) => ({
       id: p.id,
       name: p.name,
       price: formatPrice(p.variants?.[0]?.unitPrice),
-      image: p.images?.[0]?.url ?? "",
+      image: publishedImages.get(p.slug) ?? p.images?.[0]?.url ?? "",
       url: `https://${host}/products/${encodeURIComponent(p.slug)}`,
     }));
   } catch (err) {
     console.warn("[fourthwall] Fetch failed, using CTA fallback.", err);
     return [];
   }
+}
+
+async function fetchPublishedImages(host: string, collection: string): Promise<Map<string, string>> {
+  const images = new Map<string, string>();
+  try {
+    // The Storefront API can retain old mockups after merchandise artwork changes.
+    // Fourthwall's public collection feed reflects the images in the live shop.
+    const res = await fetch(`https://${host}/collections/${encodeURIComponent(collection)}.json`, {
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) throw new Error(`Shop feed returned ${res.status}`);
+    const data = (await res.json()) as { products?: { handle?: string; image?: string }[] };
+    for (const product of data.products ?? []) {
+      if (typeof product.handle === "string" && typeof product.image === "string" && product.image.trim()) {
+        images.set(product.handle, product.image);
+      }
+    }
+  } catch {
+    console.warn("[fourthwall] Published images unavailable. Keeping Storefront API images.");
+  }
+  return images;
 }
 
 function formatPrice(p: FourthwallVariant["unitPrice"]): string {

@@ -78,7 +78,7 @@ Most content changes don't require touching component code:
 - **Patreon fallback names and perks** → edit `src/data/tiers.ts`
 - **Latest videos** → pulled from YouTube API at build time. Workflow rebuilds nightly.
 - **Instagram posts** → managed via [Behold](https://behold.so) when the feed component is used
-- **Shop products** → pulled from Fourthwall Storefront API at build time
+- **Shop products** → pulled from Fourthwall Storefront API at build time, with current images from the published shop feed
 
 Anything else (hero copy, About section, etc.) lives in the relevant component file in `src/components/`.
 
@@ -93,7 +93,7 @@ Pulls latest videos via YouTube Data API v3 using the `playlistItems.list` endpo
 Embedded via Behold (Pro plan). The Behold script renders the widget client-side using the configured `BEHOLD_FEED_ID`. Widget layout managed in the Behold dashboard.
 
 ### Fourthwall (Shop)
-Build-time fetch of the latest products from the Fourthwall Storefront API using `FOURTHWALL_PUBLIC_TOKEN`. Renders up to four product cards; falls back to a CTA pointing at `shop.currentheading.com` when the token is missing or the fetch fails.
+Build-time fetch of the latest products from the Fourthwall Storefront API using `FOURTHWALL_PUBLIC_TOKEN`. Renders up to four product cards, preserving API order and prices. Images come from the published shop's `/collections/{collection}.json` feed, matched by product handle, so artwork changes appear on the next rebuild even when the API retains older mockups. If the feed fails or a matching image is missing, that card keeps its API image. Falls back to a CTA pointing at `shop.currentheading.com` when the token is missing or the product fetch fails.
 
 ### Patreon
 The homepage uses one restrained support link to [members.currentheading.com](https://members.currentheading.com). Current Heading tier names remain in `src/data/tiers.ts` as a safe source for future membership surfaces.
