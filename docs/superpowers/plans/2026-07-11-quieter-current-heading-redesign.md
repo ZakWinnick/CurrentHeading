@@ -11,7 +11,7 @@
 ## Global Constraints
 
 - Preserve Current Heading as the active brand and keep Wyld Wattage historical only.
-- Maintain three parallel lanes: EV ownership, EV charging and infrastructure, and aviation.
+- Maintain two parallel lanes: EV ownership, and EV charging and infrastructure.
 - Do not publish flight-training framing, credential-led copy, `operator-lens`, or permanent anti-sponsorship claims.
 - Target WCAG 2.2 AA and preserve reduced-motion support.
 - Do not deploy or push.

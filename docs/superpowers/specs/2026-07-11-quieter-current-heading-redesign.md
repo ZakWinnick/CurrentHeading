@@ -8,7 +8,7 @@ Redesign the Current Heading brand landing page as a quieter evolution of the ex
 
 Zak approved the audit recommendation to retain the dark photographic DNA while reducing visual intensity. The redesign is presentation-only: it must retain the established landing-page destinations and must not become a blog or editorial site.
 
-The generated mock is directional only. Its Colorado reference, fabricated story titles, aviation imagery, and other invented content must not enter production.
+The generated mock is directional only. Its Colorado reference, fabricated story titles, and other invented content must not enter production.
 
 ## Content architecture
 
@@ -26,7 +26,7 @@ The generated mock is directional only. Its Colorado reference, fabricated story
 
 - Remove `operator-lens`, flight-training statements, permanent anti-sponsorship claims, and retired Wyld Wattage language.
 - Do not present Rangeway, BARC, or NorCal EVs titles as the homepage identity.
-- Keep EV ownership, charging and infrastructure, and aviation parallel.
+- Keep EV ownership and charging infrastructure parallel.
 - Follow the Current Heading public voice rules, including no em dashes, emoji, hashtags, or sentence-opening conjunctions.
 - Never use invented videos, products, membership counts, or static membership tiers as fallback data.
 

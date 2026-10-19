@@ -10,8 +10,8 @@ Current Heading
 
 ## Company blurb
 
-Current Heading is films, photographs, and field notes by Zak Winnick, covering
-EV ownership, DC fast charging, and aviation. It goes to the charger, the ramp,
+Current Heading is films and photographs by Zak Winnick, covering
+EV ownership and DC fast charging. It goes to the charger, the ramp,
 and the cockpit, and reports what is actually there. The camera usually notices
 first.
 
