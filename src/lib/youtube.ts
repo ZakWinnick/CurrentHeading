@@ -51,7 +51,7 @@ function tagFor(title: string): string {
   if (t.includes("network") || t.includes("ea ") || t.includes("tesla")) return "Network Take";
   if (t.includes("road") || t.includes("trip")) return "Road Trip";
   if (t.includes("infrastructure") || t.includes("rangeway")) return "Infrastructure";
-  return "Field Notes";
+  return "Video";
 }
 
 interface PlaylistItem {
