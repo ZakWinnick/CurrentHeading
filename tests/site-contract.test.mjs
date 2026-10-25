@@ -117,8 +117,8 @@ test("YouTube failures return an honest empty state instead of fake videos", asy
 test("homepage keeps the live Ground Loop player and avoids the oversized legacy favicon", async () => {
   const podcast = await read("src/components/Podcast.astro");
   const base = await read("src/layouts/Base.astro");
-  assert.match(podcast, /player\.fireside\.fm/);
-  assert.match(podcast, /player\.fireside\.fm\/v3\/cSzCML9e\/latest\?theme=dark/);
+  assert.match(podcast, /embed\.podcasts\.apple\.com\/us\/podcast\/ground-loop\/id1896945615\?/);
+  assert.doesNotMatch(podcast, /player\.fireside\.fm/);
   assert.match(podcast, /<iframe/);
   assert.doesNotMatch(base, /favicon\.ico/);
 });
