@@ -6,7 +6,7 @@ const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
 test("homepage preserves the brand landing-page component order", async () => {
   const page = await read("src/pages/index.astro");
-  const expected = ["<Hero", "<About", "<LatestVideos", "<InstagramFeed", "<Podcast", "<Patreon", "<Shop", "<Footer"];
+  const expected = ["<Hero", "<About", "<LatestVideos", "<InstagramFeed", "<Podcast", "<Membership", "<Shop", "<Footer"];
   let previous = -1;
 
   for (const marker of expected) {
@@ -25,7 +25,7 @@ test("public source contains no retired or restricted Current Heading phrases", 
     "src/components/Hero.astro",
     "src/components/About.astro",
     "src/components/Footer.astro",
-    "src/components/Patreon.astro",
+    "src/components/Membership.astro",
     "src/lib/youtube.ts",
   ];
   const source = (await Promise.all(paths.map(read))).join("\n");
@@ -47,15 +47,18 @@ test("public source contains no retired or restricted Current Heading phrases", 
 test("landing-page sections use live integrations without static membership data", async () => {
   const youtube = await read("src/components/LatestVideos.astro");
   const instagram = await read("src/components/InstagramFeed.astro");
-  const patreon = await read("src/components/Patreon.astro");
+  const membership = await read("src/components/Membership.astro");
   const shop = await read("src/components/Shop.astro");
 
   assert.match(youtube, /fetchLatestVideos\(6\)/);
   assert.match(instagram, /BEHOLD_FEED_ID/);
   assert.match(instagram, /behold-widget/);
-  assert.match(patreon, /fetchPatreonStats\(\)/);
-  assert.match(patreon, /stats\?\.tiers|stats && stats\.tiers/);
-  assert.doesNotMatch(patreon, /\bTIERS\b/);
+  const base = await read("src/layouts/Base.astro");
+  assert.match(base, /https:\/\/js\.memberful\.com\/embed\.js/);
+  assert.match(base, /Memberful\.setup\(c\)/);
+  assert.match(base, /site:\s*\["https:\/\/currentheading\.memberful\.com"\]/);
+  assert.match(membership, /href="https:\/\/currentheading\.memberful\.com"/);
+  assert.doesNotMatch(membership, /fetchPatreonStats|\bTIERS\b/);
   await assert.rejects(access(new URL("../src/data/tiers.ts", import.meta.url)));
   assert.match(shop, /fetchShopProducts\(\)/);
   assert.doesNotMatch(shop, /products\.slice/);
@@ -69,7 +72,7 @@ test("navigation retains section access on mobile", async () => {
   assert.match(nav, /<summary[^>]*>[\s\S]*?ww-sr-only">Menu<\/span>[\s\S]*?<\/summary>/s);
   // Desktop and mobile both render from one array, so assert the data and the
   // binding rather than five literal hrefs.
-  for (const href of ["#videos", "#about", "#podcast", "#patreon", "#shop"]) {
+  for (const href of ["#videos", "#about", "#podcast", "#membership", "#shop"]) {
     assert.match(nav, new RegExp(`href:\\s*["']${href}["']`));
   }
   assert.match(nav, /class="ww-nav__menu-links"[\s\S]*?href=\{section\.href\}/s);
@@ -154,7 +157,7 @@ test("desktop navigation link text is vertically centered", async () => {
 
 test("Community heading and introduction use compact spacing", async () => {
   const css = await read("src/styles/global.css");
-  assert.match(css, /\.ww-patreon \.ww-section-intro\s*\{[^}]*margin-bottom:\s*1\.25rem/s);
+  assert.match(css, /\.ww-membership \.ww-section-intro\s*\{[^}]*margin-bottom:\s*1\.25rem/s);
 });
 
 test("desktop Shop copy is vertically centered beside products", async () => {

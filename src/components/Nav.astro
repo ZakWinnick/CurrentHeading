@@ -2,12 +2,12 @@
 import Icon from "./icons.astro";
 
 // One source of truth for both the desktop cluster and the mobile panel.
-// Ordered to match the page: About, Latest Videos, Ground Loop, Patreon, Shop.
+// Ordered to match the page: About, Latest Videos, Ground Loop, Membership, Shop.
 const sections = [
   { href: "#about", label: "About" },
   { href: "#videos", label: "Channel" },
   { href: "#podcast", label: "Ground Loop" },
-  { href: "#patreon", label: "Patreon" },
+  { href: "#membership", label: "Membership" },
   { href: "#shop", label: "Shop" },
 ];
 
@@ -15,7 +15,7 @@ const socials = [
   { href: "https://youtube.com/@currentheading", kind: "yt", label: "Current Heading on YouTube" },
   { href: "https://instagram.com/currentheading", kind: "ig", label: "Current Heading on Instagram" },
   { href: "https://x.com/ZakWinnick", kind: "x", label: "Zak Winnick on X" },
-  { href: "https://members.currentheading.com", kind: "patreon", label: "Current Heading on Patreon" },
+  { href: "https://currentheading.memberful.com", kind: "membership", label: "Current Heading membership" },
 ] as const;
 ---
 <nav class="ww-nav" id="site-nav" aria-label="Primary">
@@ -38,7 +38,7 @@ const socials = [
       <ul class="ww-nav__socials">
         {socials.map((social) => (
           <li>
-            <a href={social.href} target="_blank" rel="noopener" aria-label={social.label}>
+            <a href={social.href} target={social.kind === "membership" ? undefined : "_blank"} rel="noopener" aria-label={social.label}>
               <Icon kind={social.kind} size={17} />
             </a>
           </li>
@@ -59,7 +59,7 @@ const socials = [
         </div>
         <div class="ww-nav__menu-socials">
           {socials.map((social) => (
-            <a href={social.href} target="_blank" rel="noopener" aria-label={social.label}>
+            <a href={social.href} target={social.kind === "membership" ? undefined : "_blank"} rel="noopener" aria-label={social.label}>
               <Icon kind={social.kind} size={18} />
             </a>
           ))}

@@ -47,6 +47,16 @@ const canonical = "https://currentheading.com/";
   />
 
   <script src="https://tinylytics.app/embed/vQ5FDyywb7SypJ7Wqr5-.js" defer></script>
+  <script is:inline type="text/javascript">
+    (function(c) {
+      var script = document.createElement("script");
+      script.src = "https://js.memberful.com/embed.js";
+      script.onload = function() { Memberful.setup(c) };
+      document.head.appendChild(script);
+    })({
+      site: ["https://currentheading.memberful.com"]
+    });
+  </script>
 </head>
 <body>
   <slot />

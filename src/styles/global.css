@@ -633,7 +633,7 @@ section[id] {
 
 /* Instagram, membership, and shop */
 .ww-instagram,
-.ww-patreon {
+.ww-membership {
   background: var(--ww-surface);
 }
 
@@ -641,73 +641,14 @@ section[id] {
   min-height: 180px;
 }
 
-.ww-patreon__intro {
+.ww-membership__intro {
   max-width: 62ch;
   margin-bottom: clamp(2rem, 5vw, 4rem);
   color: var(--ww-muted);
 }
 
-.ww-patreon .ww-section-intro {
+.ww-membership .ww-section-intro {
   margin-bottom: 1.25rem;
-}
-
-.ww-patreon__count {
-  margin: 0;
-  color: var(--ww-muted);
-  font-family: var(--ww-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.ww-patreon__tiers {
-  display: grid;
-  gap: 1px;
-  border: 1px solid var(--ww-line);
-  background: var(--ww-line);
-}
-
-.ww-tier {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: clamp(1.5rem, 3vw, 2.5rem);
-  background: var(--ww-canvas);
-}
-
-.ww-tier h3 {
-  margin: 0.6rem 0 0;
-  font-size: clamp(1.3rem, 2vw, 1.8rem);
-}
-
-.ww-tier__price {
-  margin: 1rem 0 1.5rem;
-  color: var(--ww-paper);
-  font-family: var(--ww-display);
-  font-size: 2rem;
-  font-weight: 650;
-}
-
-.ww-tier__price span {
-  margin-left: 0.25rem;
-  color: var(--ww-muted);
-  font-family: var(--ww-body);
-  font-size: 0.8rem;
-  font-weight: 400;
-}
-
-.ww-tier__description {
-  flex: 1;
-  color: var(--ww-muted);
-}
-
-.ww-tier__description p {
-  margin-bottom: 0.75rem;
-}
-
-.ww-tier .ww-text-link {
-  margin-top: 1.25rem;
 }
 
 .ww-empty-state {
@@ -896,10 +837,6 @@ section[id] {
   .ww-shop__grid {
     grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
     align-items: center;
-  }
-
-  .ww-patreon__tiers {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .ww-footer__inner {

@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  # Daily rebuild so YouTube, Fourthwall, and Patreon data stay fresh
+  # Daily rebuild so YouTube and Fourthwall data stay fresh
   # without anyone touching the repo. GitHub Actions cron runs in UTC,
   # so we register both DST and standard-time slots and let the guard
   # job below skip whichever one isn't actually 03:00 PT.
@@ -64,7 +64,6 @@ jobs:
           FOURTHWALL_PUBLIC_TOKEN: ${{ secrets.FOURTHWALL_PUBLIC_TOKEN }}
           FOURTHWALL_COLLECTION_SLUG: ${{ vars.FOURTHWALL_COLLECTION_SLUG }}
           FOURTHWALL_SHOP_HOST: ${{ vars.FOURTHWALL_SHOP_HOST }}
-          PATREON_ACCESS_TOKEN: ${{ secrets.PATREON_ACCESS_TOKEN }}
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v5

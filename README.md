@@ -39,8 +39,6 @@ Dev server runs at `http://localhost:4321` by default.
 │   └── robots.txt
 ├── src/
 │   ├── components/           # Astro components (one per section)
-│   ├── data/
-│   │   └── tiers.ts          # Patreon tier definitions
 │   ├── layouts/
 │   │   └── Base.astro        # base HTML shell
 │   ├── lib/
@@ -56,7 +54,7 @@ Dev server runs at `http://localhost:4321` by default.
 
 ## Environment variables
 
-All integrations run at **build time**, so the values need to live in GitHub Actions, not in the deployed HTML.
+YouTube and Fourthwall fetch data at build time. Their credentials belong in GitHub Actions. Behold and Memberful load in the browser.
 
 Set these in **Settings → Secrets and variables → Actions** on the GitHub repo:
 
@@ -75,7 +73,7 @@ For local development, copy `.env.example` to `.env` and fill in values. `.env` 
 
 Most content changes don't require touching component code:
 
-- **Patreon fallback names and perks** → edit `src/data/tiers.ts`
+- **Membership plans and checkout** → managed in Memberful. The homepage links to `currentheading.memberful.com/join`.
 - **Latest videos** → pulled from YouTube API at build time. Workflow rebuilds nightly.
 - **Instagram posts** → managed via [Behold](https://behold.so) when the feed component is used
 - **Shop products** → pulled from Fourthwall Storefront API at build time, with current images from the published shop feed
@@ -95,8 +93,8 @@ Embedded via Behold (Pro plan). The Behold script renders the widget client-side
 ### Fourthwall (Shop)
 Build-time fetch of the latest products from the Fourthwall Storefront API using `FOURTHWALL_PUBLIC_TOKEN`. Renders up to four product cards, preserving API order and prices. Images come from the published shop's `/collections/{collection}.json` feed, matched by product handle, so artwork changes appear on the next rebuild even when the API retains older mockups. If the feed fails or a matching image is missing, that card keeps its API image. Falls back to a CTA pointing at `shop.currentheading.com` when the token is missing or the product fetch fails.
 
-### Patreon
-The homepage uses one restrained support link to [members.currentheading.com](https://members.currentheading.com). Current Heading tier names remain in `src/data/tiers.ts` as a safe source for future membership surfaces.
+### Memberful
+The shared layout loads Memberful’s embed script and configures `https://currentheading.memberful.com`. The membership section, navigation, and footer link to its hosted membership site. Memberful handles membership options and checkout; no membership API token or build-time tier fetch is needed. Links still open the hosted membership site if the embed script is unavailable.
 
 ### Podcast
 Ground Loop ("A Companion to Current Heading") is live at [podcast.currentheading.com](https://podcast.currentheading.com), hosted on Fireside. The homepage links to the podcast site without preloading an audio player.

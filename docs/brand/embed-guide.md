@@ -59,7 +59,7 @@ used together or on their own.
 | About | `About.astro` | `ww-tex ww-tex--contour` |
 | Latest videos | `LatestVideos.astro` | `ww-tex ww-tex--grid` |
 | Ground Loop | `Podcast.astro` | `ww-tex ww-tex--isobar ww-atmo ww-atmo--bloom` |
-| Patreon | `Patreon.astro` | `ww-tex ww-tex--sectional` |
+| Membership | `Membership.astro` | `ww-tex ww-tex--sectional` |
 | Shop | `Shop.astro` | `ww-tex ww-tex--connector` |
 
 Two surfaces are deliberately left clean:
