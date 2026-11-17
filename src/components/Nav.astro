@@ -11,6 +11,11 @@ const sections = [
   { href: "#shop", label: "Shop" },
 ];
 
+const accountLinks = [
+  { href: "https://currentheading.memberful.com/account", label: "Sign in" },
+  { href: "https://currentheading.memberful.com/auth/sign_out", label: "Sign out" },
+];
+
 const socials = [
   { href: "https://youtube.com/@currentheading", kind: "yt", label: "Current Heading on YouTube" },
   { href: "https://instagram.com/currentheading", kind: "ig", label: "Current Heading on Instagram" },
@@ -30,6 +35,9 @@ const socials = [
           <li>
             <a href={section.href} data-nav-link>{section.label}</a>
           </li>
+        ))}
+        {accountLinks.map((link) => (
+          <li><a href={link.href}>{link.label}</a></li>
         ))}
       </ul>
 
@@ -55,6 +63,9 @@ const socials = [
         <div class="ww-nav__menu-links">
           {sections.map((section) => (
             <a href={section.href} data-nav-link>{section.label}</a>
+          ))}
+          {accountLinks.map((link) => (
+            <a href={link.href}>{link.label}</a>
           ))}
         </div>
         <div class="ww-nav__menu-socials">

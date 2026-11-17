@@ -789,8 +789,8 @@ section[id] {
   font-size: 0.75rem;
 }
 
-/* The cluster needs room for five anchors, the rule, and four icons. */
-@media (min-width: 900px) {
+/* Leave room for section anchors, member account links, and social icons. */
+@media (min-width: 1100px) {
   .ww-nav__cluster {
     display: flex;
     align-items: center;
@@ -803,7 +803,7 @@ section[id] {
   /* Capped so the capsule reads as a floating object rather than a wide bar
      with rounded ends. Sized to the cluster's content, not the viewport. */
   .ww-nav.is-scrolled .ww-nav__shell {
-    width: min(calc(100% - 2 * var(--ww-gutter)), 880px);
+    width: min(calc(100% - 2 * var(--ww-gutter)), 1080px);
   }
 }
 
