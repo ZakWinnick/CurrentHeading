@@ -12,8 +12,9 @@ const sections = [
 ];
 
 const accountLinks = [
-  { href: "https://currentheading.memberful.com/account", label: "Sign in" },
-  { href: "https://currentheading.memberful.com/auth/sign_out", label: "Sign out" },
+  { href: "/member/sign-in/", label: "Sign in", visibility: "out" },
+  { href: "https://currentheading.memberful.com/account", label: "Account", visibility: "in" },
+  { href: "/member/sign-out/", label: "Sign out", visibility: "in" },
 ];
 
 const socials = [
@@ -37,7 +38,7 @@ const socials = [
           </li>
         ))}
         {accountLinks.map((link) => (
-          <li><a href={link.href}>{link.label}</a></li>
+          <li data-member-visibility={link.visibility} hidden={link.visibility === 'in'}><a href={link.href}>{link.label}</a></li>
         ))}
       </ul>
 
@@ -65,7 +66,7 @@ const socials = [
             <a href={section.href} data-nav-link>{section.label}</a>
           ))}
           {accountLinks.map((link) => (
-            <a href={link.href}>{link.label}</a>
+            <a href={link.href} data-member-visibility={link.visibility} hidden={link.visibility === 'in'}>{link.label}</a>
           ))}
         </div>
         <div class="ww-nav__menu-socials">

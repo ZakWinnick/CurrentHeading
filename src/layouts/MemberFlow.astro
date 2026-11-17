@@ -1,0 +1,26 @@
+---
+import Base from './Base.astro';
+import '../styles/global.css';
+import '../styles/brand.css';
+
+interface Props {
+  flow: 'sign-in' | 'callback' | 'sign-out';
+  heading: string;
+  message: string;
+}
+const { flow, heading, message } = Astro.props;
+---
+<Base title={`${heading} | Current Heading`} memberAuthPage>
+  <main class="ww-member-flow" data-member-flow={flow}>
+    <a href="/" aria-label="Current Heading home">
+      <img src="/images/brand/03c-v1/lockup-horizontal-light.svg" alt="Current Heading" width="280" height="117" />
+    </a>
+    <div role="status" aria-live="polite">
+      <h1 data-member-heading>{heading}</h1>
+      <p data-member-message>{message}</p>
+    </div>
+    <a class="ww-btn ww-btn--primary" href="/member/sign-in/" data-member-retry hidden>Try sign-in again</a>
+    <a class="ww-text-link" href="/">Back to Current Heading</a>
+    <noscript><p>Enable JavaScript to sign in here, or <a href="https://currentheading.memberful.com/account">open your member account</a>.</p></noscript>
+  </main>
+</Base>

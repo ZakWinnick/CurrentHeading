@@ -2,11 +2,13 @@
 interface Props {
   title?: string;
   description?: string;
+  memberAuthPage?: boolean;
 }
 
 const {
   title = "Current Heading. EV ownership and charging.",
   description = "Explore EV ownership and charging infrastructure through films and photographs by Zak Winnick.",
+  memberAuthPage = false,
 } = Astro.props;
 
 const canonical = "https://currentheading.com/";
@@ -19,6 +21,8 @@ const canonical = "https://currentheading.com/";
   <meta name="theme-color" content="#11100f" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  {memberAuthPage && <meta name="referrer" content="no-referrer" />}
+  {memberAuthPage && <meta name="robots" content="noindex, nofollow" />}
   <link rel="canonical" href={canonical} />
 
   <meta property="og:type" content="website" />
@@ -46,8 +50,8 @@ const canonical = "https://currentheading.com/";
     href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"
   />
 
-  <script src="https://tinylytics.app/embed/vQ5FDyywb7SypJ7Wqr5-.js" defer></script>
-  <script is:inline type="text/javascript">
+  {!memberAuthPage && <script src="https://tinylytics.app/embed/vQ5FDyywb7SypJ7Wqr5-.js" defer></script>}
+  {!memberAuthPage && <script is:inline type="text/javascript">
     (function(c) {
       var script = document.createElement("script");
       script.src = "https://js.memberful.com/embed.js";
@@ -56,6 +60,10 @@ const canonical = "https://currentheading.com/";
     })({
       site: ["https://currentheading.memberful.com"]
     });
+  </script>}
+  <script>
+    import { initializeMemberfulSession } from '../scripts/memberful-session.mjs';
+    void initializeMemberfulSession();
   </script>
 </head>
 <body>

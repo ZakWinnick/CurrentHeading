@@ -96,6 +96,12 @@ Build-time fetch of the latest products from the Fourthwall Storefront API using
 ### Memberful
 The shared layout loads Memberful’s embed script and configures `https://currentheading.memberful.com`. The membership section, navigation, and footer link to its hosted membership site. Memberful handles membership options and checkout; no membership API token or build-time tier fetch is needed. Links still open the hosted membership site if the embed script is unavailable.
 
+Website sign-in uses Memberful's Single-page Application OAuth flow with PKCE. Public configuration lives in `src/data/memberful.json`; the registered callback is `https://currentheading.com/member/callback/`. Never add an admin API key or client secret to this configuration. The routes under `/member/` start sign-in, validate the callback, and sign out. Authentication pages omit analytics and the overlay script and use a no-referrer policy.
+
+The browser stores member access/refresh tokens in local storage, validates identity against Memberful's member API, and refreshes expired access tokens. Navigation and footer show Sign in before authentication, then Account and Sign out after successful validation. Logout clears the website session across tabs and visits Memberful's logout endpoint. Website sessions start through the website's Sign in link; signing into the hosted Memberful site alone does not establish the website's OAuth session. Memberful's optional automatic-login setting stays disabled because this flow requires its original state and PKCE verifier.
+
+Run `npm test` for PKCE, callback validation, token refresh, return destination, and logout race coverage. A completed member login must also be checked in the deployed browser because the callback is registered to the production domain.
+
 ### Podcast
 Ground Loop ("A Companion to Current Heading") is live at [podcast.currentheading.com](https://podcast.currentheading.com), hosted on Fireside. The homepage links to the podcast site without preloading an audio player.
 
