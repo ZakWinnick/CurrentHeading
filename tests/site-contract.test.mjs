@@ -44,7 +44,7 @@ test("public source contains no retired or restricted Current Heading phrases", 
   }
 });
 
-test("landing-page sections use live integrations without static membership data", async () => {
+test("landing-page sections retain live integrations and Memberful signup", async () => {
   const youtube = await read("src/components/LatestVideos.astro");
   const instagram = await read("src/components/InstagramFeed.astro");
   const membership = await read("src/components/Membership.astro");
@@ -57,7 +57,7 @@ test("landing-page sections use live integrations without static membership data
   assert.match(base, /https:\/\/js\.memberful\.com\/embed\.js/);
   assert.match(base, /Memberful\.setup\(c\)/);
   assert.match(base, /site:\s*\["https:\/\/currentheading\.memberful\.com"\]/);
-  assert.match(membership, /href="https:\/\/currentheading\.memberful\.com"/);
+  assert.match(membership, /href="https:\/\/currentheading\.memberful\.com\/join"/);
   assert.doesNotMatch(membership, /fetchPatreonStats|\bTIERS\b/);
   await assert.rejects(access(new URL("../src/data/tiers.ts", import.meta.url)));
   assert.match(shop, /fetchShopProducts\(\)/);

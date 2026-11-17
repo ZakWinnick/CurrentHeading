@@ -85,7 +85,7 @@ To force a refresh outside the nightly schedule, push to `main` or run the workf
 ## External integrations
 
 ### YouTube
-Pulls latest videos via YouTube Data API v3 using the `playlistItems.list` endpoint against the channel's uploads playlist (the `UC...` channel ID is converted to `UU...` to get the uploads playlist). Falls back to placeholder cards if env vars are missing.
+Pulls the six latest qualifying videos via YouTube Data API v3 from the channel's uploads playlist. Each video must belong to the configured channel, be public and processed, have a thumbnail, and be longer than three minutes. Upcoming, current, and completed live broadcasts are excluded using broadcast metadata. The duration cutoff excludes Shorts and also excludes regular videos of three minutes or less because the API has no direct Shorts flag. Up to 250 recent uploads are scanned to fill the grid after exclusions. Missing credentials or API failures show an honest channel-link fallback.
 
 ### Instagram
 Embedded via Behold (Pro plan). The Behold script renders the widget client-side using the configured `BEHOLD_FEED_ID`. Widget layout managed in the Behold dashboard.
@@ -101,6 +101,8 @@ Website sign-in uses Memberful's Single-page Application OAuth flow with PKCE. P
 The browser stores member access/refresh tokens in local storage, validates identity against Memberful's member API, and refreshes expired access tokens. Navigation and footer show Sign in before authentication, then Account and Sign out after successful validation. Logout clears the website session across tabs and visits Memberful's logout endpoint. Website sessions start through the website's Sign in link; signing into the hosted Memberful site alone does not establish the website's OAuth session. Memberful's optional automatic-login setting stays disabled because this flow requires its original state and PKCE verifier.
 
 Run `npm test` for PKCE, callback validation, token refresh, return destination, and logout race coverage. A completed member login must also be checked in the deployed browser because the callback is registered to the production domain.
+
+The homepage membership section presents Along for the Ride with the approved description, $8/month or $80/year, and a Become a member button linking directly to `/join`. Keep this displayed pricing synchronized with Memberful when changing the offering.
 
 ### Podcast
 Ground Loop ("A Companion to Current Heading") is live at [podcast.currentheading.com](https://podcast.currentheading.com), hosted on Fireside. The homepage links to the podcast site without preloading an audio player.

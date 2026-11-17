@@ -1,7 +1,7 @@
-// Build-time YouTube fetch. Pulls latest uploads from the channel's
-// uploads playlist, enriches with view count and duration.
+// Build-time YouTube fetch. Features public, processed uploads longer than
+// three minutes. Excludes upcoming, current, and archived live broadcasts.
 //
-// Env vars (Cloudflare Pages dashboard, or local .env):
+// Env vars (GitHub Actions secrets, or local .env):
 //   YOUTUBE_API_KEY      Google Cloud API key with YouTube Data API v3 enabled
 //   YOUTUBE_CHANNEL_ID   The "UC..." channel ID for @currentheading
 //
@@ -26,16 +26,20 @@ function uploadsPlaylistId(channelId: string): string {
   return channelId;
 }
 
+function durationSeconds(iso: string): number {
+  const match = iso.match(/^P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/);
+  if (!match) return 0;
+  return Number(match[1] ?? 0) * 86400 + Number(match[2] ?? 0) * 3600
+    + Number(match[3] ?? 0) * 60 + Number(match[4] ?? 0);
+}
+
 function parseDuration(iso: string): string {
-  // PT1H2M3S -> 1:02:03, PT12M38S -> 12:38, PT45S -> 0:45
-  const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
-  if (!m) return "0:00";
-  const h = parseInt(m[1] ?? "0", 10);
-  const min = parseInt(m[2] ?? "0", 10);
-  const sec = parseInt(m[3] ?? "0", 10);
+  const total = durationSeconds(iso);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor(total % 3600 / 60);
+  const seconds = total % 60;
   const pad = (n: number) => String(n).padStart(2, "0");
-  if (h > 0) return `${h}:${pad(min)}:${pad(sec)}`;
-  return `${min}:${pad(sec)}`;
+  return hours ? `${hours}:${pad(minutes)}:${pad(seconds)}` : `${minutes}:${pad(seconds)}`;
 }
 
 function formatViews(n: number): string {
@@ -55,64 +59,84 @@ function tagFor(title: string): string {
 }
 
 interface PlaylistItem {
-  contentDetails: { videoId: string };
-  snippet: { title: string; thumbnails: Record<string, { url: string }>; publishedAt: string };
+  contentDetails?: { videoId?: string };
 }
 interface VideoItem {
   id: string;
-  contentDetails: { duration: string };
-  statistics: { viewCount?: string };
+  snippet?: {
+    title: string;
+    channelId: string;
+    publishedAt: string;
+    liveBroadcastContent?: string;
+    thumbnails?: Record<string, { url?: string }>;
+  };
+  contentDetails?: { duration?: string };
+  statistics?: { viewCount?: string };
+  status?: { privacyStatus?: string; uploadStatus?: string };
+  liveStreamingDetails?: object;
 }
 
-export async function fetchLatestVideos(limit = 6): Promise<VideoMeta[]> {
-  const key = import.meta.env.YOUTUBE_API_KEY;
-  const channelId = import.meta.env.YOUTUBE_CHANNEL_ID;
+export async function fetchLatestVideos(limit = 6, env: Record<string, string | undefined> = import.meta.env ?? {}): Promise<VideoMeta[]> {
+  const key = env.YOUTUBE_API_KEY;
+  const channelId = env.YOUTUBE_CHANNEL_ID;
   if (!key || !channelId) {
     console.warn("[youtube] Missing YOUTUBE_API_KEY or YOUTUBE_CHANNEL_ID. Live videos unavailable.");
     return [];
   }
+  if (!Number.isFinite(limit) || limit < 1) return [];
+  const wanted = Math.min(50, Math.floor(limit));
 
   try {
-    const playlistId = uploadsPlaylistId(channelId);
-    const playlistUrl =
-      `https://www.googleapis.com/youtube/v3/playlistItems` +
-      `?part=snippet,contentDetails&maxResults=${limit}` +
-      `&playlistId=${encodeURIComponent(playlistId)}&key=${encodeURIComponent(key)}`;
-
-    const playlistRes = await fetch(playlistUrl);
-    if (!playlistRes.ok) throw new Error(`playlistItems ${playlistRes.status}`);
-    const playlistJson = await playlistRes.json() as { items: PlaylistItem[] };
-    const items = playlistJson.items ?? [];
-    if (items.length === 0) return [];
-
-    const ids = items.map((it) => it.contentDetails.videoId).join(",");
-    const videosUrl =
-      `https://www.googleapis.com/youtube/v3/videos` +
-      `?part=contentDetails,statistics&id=${encodeURIComponent(ids)}&key=${encodeURIComponent(key)}`;
-    const videosRes = await fetch(videosUrl);
-    if (!videosRes.ok) throw new Error(`videos ${videosRes.status}`);
-    const videosJson = await videosRes.json() as { items: VideoItem[] };
-    const stats = new Map(videosJson.items.map((v) => [v.id, v]));
-
-    return items.map((it) => {
-      const id = it.contentDetails.videoId;
-      const meta = stats.get(id);
-      const thumbs = it.snippet.thumbnails ?? {};
-      const thumb =
-        thumbs.maxres?.url ?? thumbs.standard?.url ?? thumbs.high?.url ?? thumbs.medium?.url ?? thumbs.default?.url ?? "";
-      return {
-        id,
-        title: it.snippet.title,
-        url: `https://youtube.com/watch?v=${id}`,
-        thumbnail: thumb,
-        duration: meta ? parseDuration(meta.contentDetails.duration) : "",
-        views: meta?.statistics.viewCount ? formatViews(parseInt(meta.statistics.viewCount, 10)) : "",
-        publishedAt: it.snippet.publishedAt,
-        tag: tagFor(it.snippet.title),
-      };
-    });
-  } catch (err) {
-    console.warn("[youtube] Fetch failed. Live videos unavailable.", err);
+    const result: VideoMeta[] = [];
+    const seen = new Set<string>();
+    let pageToken: string | undefined;
+    // Scan up to 250 uploads so excluded entries do not leave empty grid spots.
+    for (let page = 0; page < 5 && result.length < wanted; page++) {
+      const playlistUrl = new URL("https://www.googleapis.com/youtube/v3/playlistItems");
+      playlistUrl.search = new URLSearchParams({ part: "contentDetails", maxResults: "50",
+        playlistId: uploadsPlaylistId(channelId), key, ...(pageToken ? { pageToken } : {}) }).toString();
+      const playlistRes = await fetch(playlistUrl.href, { signal: AbortSignal.timeout(15_000) });
+      if (!playlistRes.ok) throw new Error(`playlistItems ${playlistRes.status}`);
+      const playlistJson = await playlistRes.json() as { items?: PlaylistItem[]; nextPageToken?: string };
+      const ids = (playlistJson.items ?? []).flatMap(item => {
+        const id = item.contentDetails?.videoId;
+        if (!id || seen.has(id)) return [];
+        seen.add(id);
+        return [id];
+      });
+      if (ids.length) {
+        const videosUrl = new URL("https://www.googleapis.com/youtube/v3/videos");
+        videosUrl.search = new URLSearchParams({ part: "snippet,contentDetails,statistics,status,liveStreamingDetails", id: ids.join(","), key }).toString();
+        const videosRes = await fetch(videosUrl.href, { signal: AbortSignal.timeout(15_000) });
+        if (!videosRes.ok) throw new Error(`videos ${videosRes.status}`);
+        const videosJson = await videosRes.json() as { items?: VideoItem[] };
+        const details = new Map((videosJson.items ?? []).map(video => [video.id, video]));
+        for (const id of ids) {
+          const meta = details.get(id);
+          const snippet = meta?.snippet;
+          const duration = meta?.contentDetails?.duration ?? "";
+          if (!snippet || snippet.channelId !== channelId || !snippet.title
+            || meta?.status?.privacyStatus !== "public" || meta.status.uploadStatus !== "processed"
+            || meta.liveStreamingDetails || (snippet.liveBroadcastContent && snippet.liveBroadcastContent !== "none")
+            // YouTube does not expose an isShort flag. All Shorts are <= 3 minutes.
+            || durationSeconds(duration) <= 180
+            || !Number.isFinite(Date.parse(snippet.publishedAt)) || Date.parse(snippet.publishedAt) > Date.now()) continue;
+          const thumbs = snippet.thumbnails ?? {};
+          const thumbnail = ["maxres", "standard", "high", "medium", "default"]
+            .map(size => thumbs[size]?.url).find(url => typeof url === "string" && url.trim());
+          if (!thumbnail) continue;
+          result.push({ id, title: snippet.title, url: `https://youtube.com/watch?v=${id}`, thumbnail,
+            duration: parseDuration(duration), views: meta.statistics?.viewCount ? formatViews(Number(meta.statistics.viewCount)) : "",
+            publishedAt: snippet.publishedAt, tag: tagFor(snippet.title) });
+          if (result.length === wanted) break;
+        }
+      }
+      pageToken = playlistJson.nextPageToken;
+      if (!pageToken) break;
+    }
+    return result;
+  } catch {
+    console.warn("[youtube] Fetch failed. Live videos unavailable.");
     return [];
   }
 }

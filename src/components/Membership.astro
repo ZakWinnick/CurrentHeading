@@ -2,19 +2,36 @@
 import Icon from "./icons.astro";
 ---
 <section class="ww-section ww-membership ww-tex ww-tex--sectional" id="membership" aria-labelledby="membership-title">
-  <div class="ww-container">
-    <div class="ww-section-intro">
-      <p class="ww-kicker">The community</p>
-      <h2 id="membership-title">Support Current Heading.</h2>
+  <div class="ww-container ww-membership__grid">
+    <div class="ww-membership__copy">
+      <div class="ww-section-intro">
+        <p class="ww-kicker">The membership</p>
+        <h2 id="membership-title">Along for the Ride.</h2>
+      </div>
+
+      <p class="ww-membership__intro">
+        Help make the next Current Heading video happen. Get a closer look at EV
+        charging and life with an EV, including the moments that don’t make the final cut.
+      </p>
+      <p class="ww-membership__support">
+        Your membership helps fund the travel, production, and fieldwork behind Current Heading.
+      </p>
     </div>
 
-    <p class="ww-membership__intro">
-      Members help fund the travel, production, and fieldwork behind Current Heading.
-      Join the community and choose the membership that fits you.
-    </p>
-
-    <a class="ww-text-link" href="https://currentheading.memberful.com">
-      See membership options <Icon kind="arrow" />
-    </a>
+    <div class="ww-membership__join">
+      <p class="ww-kicker">One membership. Two ways to join.</p>
+      <p class="ww-membership__price"><strong>$8</strong><span>/ month</span></p>
+      <p class="ww-membership__annual">or <strong>$80 / year</strong></p>
+      <p class="ww-membership__saving">Save $16 with annual billing.</p>
+      <a class="ww-btn ww-btn--primary" href="https://currentheading.memberful.com/join">
+        Become a member <Icon kind="arrow" />
+      </a>
+      <p class="ww-membership__account" data-member-visibility="out">
+        Already a member? <a href="/member/sign-in/?returnTo=%2F%23membership">Sign in</a>
+      </p>
+      <p class="ww-membership__account" data-member-visibility="in" hidden>
+        <a href="https://currentheading.memberful.com/account">Manage your membership</a>
+      </p>
+    </div>
   </div>
 </section>
