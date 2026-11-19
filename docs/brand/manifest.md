@@ -73,18 +73,6 @@ Tiling repeats, 2048x2048, tiled at 340px and painted at 4 percent opacity.
 Both were prompted for seamless edges. Verify tiling before relying on the
 repeat at small background sizes.
 
-### marks/
-
-Flat abstract section marks on white, 2048x2048. No lettering of any kind.
-These do not replace `current-heading-mark-*.svg` or the wordmark, which remain
-the identity.
-
-| File | Motif | Model | Credits |
-|------|-------|-------|---------|
-| `marks/channel.png` | Compass heading needle merged with a play triangle | GPT Image 2 | 7 |
-| `marks/loop.png` | Closed taxiway circuit crossed by a signal trace | GPT Image 2 | 7 |
-| `marks/shop.png` | Geometric parcel form built from a folded chart plane | GPT Image 2 | 7 |
-
 ### macro/
 
 Abstract material studies, 2752x1536. Photographic but non representational.
@@ -93,6 +81,25 @@ Abstract material studies, 2752x1536. Photographic but non representational.
 |------|-------|-------|---------|
 | `macro/aluminium.png` | Brushed anodized aluminium, directional grain | Nano Banana Pro | 2 |
 | `macro/composite.png` | Matte woven composite, light absorbing | Nano Banana Pro | 2 |
+
+## Generated then dropped
+
+Three abstract section marks were generated and later removed from the repo:
+
+| File | Motif | Model | Credits |
+|------|-------|-------|---------|
+| `marks/channel` | Compass heading needle merged with a play triangle | GPT Image 2 | 7 |
+| `marks/loop` | Closed taxiway circuit crossed by a signal trace | GPT Image 2 | 7 |
+| `marks/shop` | Geometric parcel form built from a folded chart plane | GPT Image 2 | 7 |
+
+They were never wired into a component. Each was flat art on an opaque white
+background, so using one meant knocking the white out to transparent first, and
+`current-heading-mark-*.svg` and the wordmark already carry the identity. That
+made them 21 credits of asset with no role.
+
+The 21 credits stay in the totals above because they were spent. The file map
+in `public/images/brand/README.md` no longer lists them; the source generations
+remain in the Higgsfield history if they are ever wanted back.
 
 ## Not generated
 

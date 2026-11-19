@@ -93,25 +93,6 @@ The whole decorative layer is removed under `prefers-contrast: more` and in
 print. This is intentional and should not be relaxed. If a texture is load
 bearing enough that removing it breaks the design, the design is wrong.
 
-## The section marks
-
-`marks/channel.webp`, `marks/loop.webp`, and `marks/shop.webp` are generated but
-**not wired in**. They are flat art on a white background, so they need their
-background knocked out before use, and they are optional by nature. If you want
-them, knock out the white to transparent, export at the size you need, and
-place them next to a section kicker:
-
-```html
-<p class="ww-kicker">
-  <img src="/images/brand/marks/channel.webp" alt="" width="16" height="16" />
-  Latest videos
-</p>
-```
-
-Keep `alt=""`. They are decorative and the kicker text already carries the
-meaning. They do not replace `current-heading-mark-*.svg` or the wordmark,
-which remain the identity.
-
 ## Adding a new texture later
 
 1. Generate it inside the palette in `docs/brand/palette.md`. No text, nothing
